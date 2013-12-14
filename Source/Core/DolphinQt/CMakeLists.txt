@@ -14,7 +14,6 @@ set(SRCS Src/Config/ConfigAudio.cpp
         Src/Util/Resources.cpp
         Src/GameList.cpp
         Src/ISOFile.cpp
-        Src/IssueReporter.cpp
         Src/LogWindow.cpp
         Src/main.cpp
         Src/MainWindow.cpp
@@ -71,17 +70,16 @@ endif()
 set(EXEGUI dolphin-emu-qt)
 
 qt_moc(MOC_SRCS Src/Config/ConfigAudio.h
-				Src/Config/ConfigGeneral.h
-				Src/Config/ConfigGfx.h
-				Src/Config/ConfigMain.h
-				Src/Config/ConfigPad.h
-				Src/Config/ConfigWiimote.h
-				Src/Util/Util.h
-				Src/IssueReporter.h
-				Src/GameList.h
-				Src/LogWindow.h
-				Src/MainWindow.h
-				Src/RenderWindow.h)
+                Src/Config/ConfigGeneral.h
+                Src/Config/ConfigGfx.h
+                Src/Config/ConfigMain.h
+                Src/Config/ConfigPad.h
+                Src/Config/ConfigWiimote.h
+                Src/Util/Util.h
+                Src/GameList.h
+                Src/LogWindow.h
+                Src/MainWindow.h
+                Src/RenderWindow.h)
 add_executable(${EXEGUI} ${SRCS} ${MOC_SRCS})
 target_link_libraries(${EXEGUI} ${LIBS} ${QT_LIBRARIES})
 install(TARGETS ${EXEGUI} RUNTIME DESTINATION ${bindir})

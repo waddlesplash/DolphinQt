@@ -4,7 +4,6 @@
 #include "LogWindow.h"
 #include "Util/Resources.h"
 #include "Config/ConfigMain.h"
-#include "IssueReporter.h"
 
 #include "BootManager.h"
 #include "Common.h"
@@ -364,6 +363,5 @@ void DMainWindow::OnWiimoteSettings()
 
 void DMainWindow::OnReportIssue()
 {
-	DIssueReporter* reporter = new DIssueReporter(this);
-	reporter->show();
+
 }
