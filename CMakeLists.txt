@@ -673,7 +673,7 @@ if (ANDROID)
 	add_subdirectory(Externals/libiconv-1.14)
 endif()
 
-option(DISABLE_WX "Disable wxWidgets (use Qt4 or CLI interface)" OFF)
+option(DISABLE_WX "Disable wxWidgets (use Qt or CLI interface)" OFF)
 if(NOT DISABLE_WX AND NOT ANDROID)
 	include(FindwxWidgets OPTIONAL)
 	FIND_PACKAGE(wxWidgets COMPONENTS core aui adv)
@@ -752,18 +752,17 @@ if(NOT DISABLE_WX AND NOT ANDROID)
 endif(NOT DISABLE_WX AND NOT ANDROID)
 
 
-option(DISABLE_QT4 "Disable Qt4 (use wxWidgets or CLI interface)" ON)
-if(NOT DISABLE_QT4 AND DISABLE_WX)
-	include(FindQt4)
-	find_package(Qt4 COMPONENTS QtCore QtGui)
+option(DISABLE_QT "Disable Qt (use wxWidgets or CLI interface)" ON)
+if(NOT DISABLE_QT AND DISABLE_WX)
+	cmake_policy(SET CMP0020 NEW) # 0020 = autolink to qtmain
+	include(FindAnyQt)
 
-	if(QT4_FOUND AND QT_QTCORE_FOUND AND QT_QTGUI_FOUND AND QT_QTOPENGL_FOUND)
-		include(${QT_USE_FILE})
-	else()
-		message("Qt4 libraries not found, using CLI interface")
+	if(NOT QT_FOUND_OK)
+		message("Qt libraries not found, using CLI interface")
+		set(DISABLE_QT ON)
 	endif()
-elseif(NOT DISABLE_QT4 AND NOT DISABLE_WX)
-	message("Can't build Qt4 and wxWidgets GUI at the same time")
+elseif(NOT DISABLE_QT AND NOT DISABLE_WX)
+	message("Can't build Qt and wxWidgets GUI at the same time")
 endif()
 
 ########################################

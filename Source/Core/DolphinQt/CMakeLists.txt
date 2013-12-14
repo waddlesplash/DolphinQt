@@ -1,31 +1,36 @@
-set(QT_USE_QTNETWORK FALSE)
-set(QT_USE_QTOPENGL FALSE)
-set(QT_USE_QTSQL FALSE)
-set(QT_USE_QTXML FALSE)
-set(QT_USE_QTSVG FALSE)
-set(QT_USE_QTTEST FALSE)
-set(QT_USE_QTDBUS FALSE)
-set(QT_USE_QTSCRIPT FALSE)
-set(QT_USE_QTWEBKIT FALSE)
-set(QT_USE_QTXMLPATTERNS FALSE)
-set(QT_USE_PHONON FALSE)
+if(QT4)
+    include_directories(${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}/../QtWidgets ${QT_QTGUI_INCLUDE_DIR}/${QTVERSION}/QtGui)
+elseif(QT5)
+    include_directories(${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}})
+endif()
 
-set(SRCS		Src/Config/ConfigAudio.cpp
-			Src/Config/ConfigGeneral.cpp
-			Src/Config/ConfigGfx.cpp
-			Src/Config/ConfigMain.cpp
-			Src/Config/ConfigPad.cpp
-			Src/Config/ConfigWiimote.cpp
-			Src/Util/Util.cpp
-			Src/Util/Resources.cpp
-			Src/GameList.cpp
-			Src/ISOFile.cpp
-			Src/IssueReporter.cpp
-			Src/LogWindow.cpp
-			Src/main.cpp
-			Src/MainWindow.cpp
-			Src/MainWindowEvents.cpp
-			Src/RenderWindow.cpp)
+set(SRCS Src/Config/ConfigAudio.cpp
+        Src/Config/ConfigGeneral.cpp
+        Src/Config/ConfigGfx.cpp
+        Src/Config/ConfigMain.cpp
+        Src/Config/ConfigPad.cpp
+        Src/Config/ConfigWiimote.cpp
+        Src/Util/Util.cpp
+        Src/Util/Resources.cpp
+        Src/GameList.cpp
+        Src/ISOFile.cpp
+        Src/IssueReporter.cpp
+        Src/LogWindow.cpp
+        Src/main.cpp
+        Src/MainWindow.cpp
+        Src/MainWindowEvents.cpp
+        Src/RenderWindow.cpp)
+
+set(LIBS    core
+            ${LZO}
+            discio
+            bdisasm
+            inputcommon
+            common
+            audiocommon
+            z
+            sfml-network
+            ${OPENGL_LIBRARIES})
 
 if(USE_EGL)
 	set(SRCS ${SRCS} ../DolphinWX/Src/GLInterface/Platform.cpp
@@ -44,24 +49,11 @@ else()
 	else()
 		set(SRCS ${SRCS} ../DolphinWX/Src/GLInterface/GLX.cpp
 			../DolphinWX/Src/GLInterface/X11_Util.cpp)
-
+			set(LIBS ${LIBS} rt ${X11_LIBRARIES}
+				${XINPUT2_LIBRARIES}
+				${XRANDR_LIBRARIES})
 	endif()
 endif()
-
-set(LIBS		core
-			${LZO}
-			discio
-			bdisasm
-			inputcommon
-			common
-			audiocommon
-			z
-			sfml-network
-			rt
-			${OPENGL_LIBRARIES}
-			${X11_LIBRARIES}
-			${XINPUT2_LIBRARIES}
-			${XRANDR_LIBRARIES})
 
 if(SDL2_FOUND)
 	# Using shared SDL2
@@ -76,9 +68,9 @@ else(SDL2_FOUND)
 	endif()
 endif()
 
-set(EXEGUI dolphin-emu-qt4)
+set(EXEGUI dolphin-emu-qt)
 
-qt_wrap_cpp(${EXEGUI} MOC_SRCS	Src/Config/ConfigAudio.h
+qt_moc(MOC_SRCS Src/Config/ConfigAudio.h
 				Src/Config/ConfigGeneral.h
 				Src/Config/ConfigGfx.h
 				Src/Config/ConfigMain.h
