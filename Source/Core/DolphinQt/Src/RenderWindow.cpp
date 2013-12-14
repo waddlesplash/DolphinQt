@@ -2,14 +2,12 @@
 
 #include "RenderWindow.h"
 
-DRenderWindow::DRenderWindow(QWidget* parent): QWidget(parent)
+#include <QMessageBox>
+
+DRenderWindow::DRenderWindow(QWidget* p)
+	: QWidget(p)
 {
-
-}
-
-DRenderWindow::~DRenderWindow()
-{
-
+	setCursor(QCursor(Qt::BlankCursor));
 }
 
 void DRenderWindow::closeEvent(QCloseEvent* ev)
