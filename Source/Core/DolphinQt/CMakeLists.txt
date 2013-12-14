@@ -48,9 +48,9 @@ else()
 	else()
 		set(SRCS ${SRCS} ../DolphinWX/Src/GLInterface/GLX.cpp
 			../DolphinWX/Src/GLInterface/X11_Util.cpp)
-			set(LIBS ${LIBS} rt ${X11_LIBRARIES}
-				${XINPUT2_LIBRARIES}
-				${XRANDR_LIBRARIES})
+                set(LIBS ${LIBS} rt ${X11_LIBRARIES}
+                        ${XINPUT2_LIBRARIES}
+                        ${XRANDR_LIBRARIES})
 	endif()
 endif()
 
@@ -80,6 +80,7 @@ qt_moc(MOC_SRCS Src/Config/ConfigAudio.h
                 Src/LogWindow.h
                 Src/MainWindow.h
                 Src/RenderWindow.h)
-add_executable(${EXEGUI} ${SRCS} ${MOC_SRCS})
+qt_ui(UIC_SRCS Src/MainWindow1.ui)
+add_executable(${EXEGUI} ${SRCS} ${MOC_SRCS} ${UIC_SRCS})
 target_link_libraries(${EXEGUI} ${LIBS} ${QT_LIBRARIES})
 install(TARGETS ${EXEGUI} RUNTIME DESTINATION ${bindir})
