@@ -241,9 +241,9 @@ void DMainWindow::OnRefreshList()
 			dynamic_cast<QWidget*>(*it)->setEnabled(true);
 }
 
-void DMainWindow::OnShowLogMan(bool show)
+void DMainWindow::OnShowLogMan(bool a)
 {
-	if (show)
+    if (a)
 	{
 		logWindow->setVisible(true);
 		SConfig::GetInstance().m_InterfaceLogWindow = true;
@@ -255,9 +255,9 @@ void DMainWindow::OnShowLogMan(bool show)
 	}
 }
 
-void DMainWindow::OnShowLogSettings(bool show)
+void DMainWindow::OnShowLogSettings(bool a)
 {
-	if (show)
+    if (a)
 	{
 		logSettings->setVisible(true);
 		SConfig::GetInstance().m_InterfaceLogConfigWindow = true;
@@ -269,9 +269,9 @@ void DMainWindow::OnShowLogSettings(bool show)
 	}
 }
 
-void DMainWindow::OnShowToolbar(bool show)
+void DMainWindow::OnShowToolbar(bool a)
 {
-	toolBar->setVisible(show);
+    toolBar->setVisible(a);
 }
 
 void DMainWindow::OnSwitchToGameList()
