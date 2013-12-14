@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QSettings>
@@ -7,9 +8,14 @@
 #include "Util/Util.h"
 
 #include <Core.h>
+
 class DLogWindow;
 class DLogSettingsDock;
 class DGameBrowser;
+namespace Ui {
+class MainWindow;
+}
+
 class DMainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -64,27 +70,12 @@ private:
 
 	void closeEvent(QCloseEvent*);
 
-	// Widgets
+	Ui::MainWindow *ui;
 	DGameBrowser* gameBrowser;
-	DLayoutWidgetV* centralLayout; // Stores gameBrowser OR render widget
-
+	QWidget* renderWindow;
 	DLogWindow* logWindow;
 	DLogSettingsDock* logSettings;
-
-	QWidget* renderWindow;
-	QToolBar* toolBar;
-
 	DConfigDialog* dialog;
-
-	// Actions
-	QAction* openAction;
-	QAction* refreshAction;
-
-	QAction* playAction;
-	QAction* stopAction;
-
-	QAction* showLogManAct;
-	QAction* showLogSettingsAct;
 
 	// Emulation stopping closes the render window; closing the render window also stops emulation
 	// Thus, in order to prevent endless loops, we need this variable.
@@ -94,3 +85,5 @@ signals:
 	void CoreStateChanged(Core::EState state);
 	void StartIsoScanning();
 };
+
+#endif // MAINWINDOW_H

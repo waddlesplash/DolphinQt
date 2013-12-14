@@ -4,6 +4,8 @@ elseif(QT5)
     include_directories(${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}})
 endif()
 
+include_directories(${CMAKE_CURRENT_BINARY_DIR}) # because of generated UI files
+
 set(SRCS Src/Config/ConfigAudio.cpp
         Src/Config/ConfigGeneral.cpp
         Src/Config/ConfigGfx.cpp
@@ -17,7 +19,6 @@ set(SRCS Src/Config/ConfigAudio.cpp
         Src/LogWindow.cpp
         Src/main.cpp
         Src/MainWindow.cpp
-        Src/MainWindowEvents.cpp
         Src/RenderWindow.cpp)
 
 set(LIBS    core
@@ -80,7 +81,7 @@ qt_moc(MOC_SRCS Src/Config/ConfigAudio.h
                 Src/LogWindow.h
                 Src/MainWindow.h
                 Src/RenderWindow.h)
-qt_ui(UIC_SRCS Src/MainWindow1.ui)
+qt_ui(UIC_SRCS Src/MainWindow.ui)
 add_executable(${EXEGUI} ${SRCS} ${MOC_SRCS} ${UIC_SRCS})
 target_link_libraries(${EXEGUI} ${LIBS} ${QT_LIBRARIES})
 install(TARGETS ${EXEGUI} RUNTIME DESTINATION ${bindir})
