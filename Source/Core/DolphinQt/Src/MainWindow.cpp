@@ -230,7 +230,9 @@ void DMainWindow::DoStop()
 		// Ask for confirmation in case the user accidentally clicked Stop / Escape
 		if (SConfig::GetInstance().m_LocalCoreStartupParameter.bConfirmStop)
 		{
-			int ret = QMessageBox::question(this, tr("Please confirm..."), tr("Do you want to stop the current emulation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+			int ret = QMessageBox::question(renderWindow, tr("Please confirm..."),
+											tr("Do you want to stop the current emulation?"),
+											QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 
 			if (ret == QMessageBox::No)
 				return;
