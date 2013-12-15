@@ -10,7 +10,8 @@ option(USE_WAYLAND "Enables Wayland Support" OFF)
 option(USE_GLES "Enables GLES2 And EGL, disables OGL" OFF)
 option(USE_GLES3 "Enables GLES3 and EGL" OFF)
 option(USE_UPNP "Enables UPnP port mapping support" ON)
-option(DISABLE_WX "Disable wxWidgets (use CLI interface)" OFF)
+option(DISABLE_WX "Disable wxWidgets (use Qt or CLI interface)" ON)
+option(DISABLE_QT "Disable Qt (use wxWidgets or CLI interface)" OFF)
 option(ENABLE_PCH "Use PCH to speed up compilation" ON)
 
 option(FASTLOG "Enable all logs" OFF)
@@ -673,7 +674,6 @@ if (ANDROID)
 	add_subdirectory(Externals/libiconv-1.14)
 endif()
 
-option(DISABLE_WX "Disable wxWidgets (use Qt or CLI interface)" OFF)
 if(NOT DISABLE_WX AND NOT ANDROID)
 	include(FindwxWidgets OPTIONAL)
 	FIND_PACKAGE(wxWidgets COMPONENTS core aui adv)
@@ -751,8 +751,6 @@ if(NOT DISABLE_WX AND NOT ANDROID)
 	add_definitions(-DHAVE_WX=1)
 endif(NOT DISABLE_WX AND NOT ANDROID)
 
-
-option(DISABLE_QT "Disable Qt (use wxWidgets or CLI interface)" ON)
 if(NOT DISABLE_QT AND DISABLE_WX)
 	cmake_policy(SET CMP0020 NEW) # 0020 = autolink to qtmain
 	include(FindAnyQt)
