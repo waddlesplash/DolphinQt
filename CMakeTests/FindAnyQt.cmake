@@ -2,7 +2,7 @@
 
 find_package(Qt5Core QUIET)
 if(Qt5Core_FOUND)
-	cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
+    cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
 
     find_package(Qt5Gui REQUIRED)
     find_package(Qt5Widgets REQUIRED)
@@ -29,6 +29,7 @@ else()
       set(QT_FOUND_OK TRUE)
       set(QT5 FALSE)
       set(QT4 TRUE)
+      message("Qt4 found, enabling Qt GUI.")
     endif()
 	include(${QT_USE_FILE})
 
