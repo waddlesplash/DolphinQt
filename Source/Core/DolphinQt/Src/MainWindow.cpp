@@ -3,6 +3,8 @@
 #include <QDesktopWidget>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "GameList.h"
 #include "MainWindow.h"
@@ -85,8 +87,6 @@ DMainWindow::DMainWindow()
 	connect(gameBrowserAsListAct, SIGNAL(triggered()), this, SLOT(OnSwitchToGameList()));
 	connect(gameBrowserAsGridAct, SIGNAL(triggered()), this, SLOT(OnSwitchToGameGrid()));
 	*/
-
-	connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(OnAbout()));
 
 	connect(this, SIGNAL(CoreStateChanged(Core::EState)), this, SLOT(OnCoreStateChanged(Core::EState)));
 
@@ -411,39 +411,6 @@ void DMainWindow::OnSwitchToGameGrid()
 	gameBrowser->SetStyle(DGameBrowser::Style_Grid);
 }
 
-void DMainWindow::OnAbout()
-{
-	// TODO: Improve SCM information
-	QMessageBox::about(this, tr("About Dolphin"),
-						tr(	"Dolphin SCM revision %1\n"
-							"Copyright (c) 2003-2012 Dolphin Team\n"
-							"\n"
-							"Dolphin is a Gamecube/Wii emulator, which was\n"
-							"originally written by F|RES and ector.\n"
-							"Today Dolphin is an open source project with too\n"
-							"many contributors to list.\n"
-							"If interested, just go check out the project page at\n"
-							"http://code.google.com/p/dolphin-emu/ .\n"
-							"\n"
-							"Special thanks to Bushing, Costis, CrowTRobo,\n"
-							"Marcan, Segher, Titanik, or9 and Hotquik for their\n"
-							"reverse engineering and docs/demos.\n"
-							"\n"
-							"Big thanks to Gilles Mouchard whose Microlib PPC\n"
-							"emulator gave our development a kickstart.\n"
-							"\n"
-							"Thanks to Frank Wille for his PowerPC disassembler,\n"
-							"which or9 and we modified to include Gekko specifics.\n"
-							"\n"
-							"Thanks to hcs/destop for their GC ADPCM decoder.\n"
-							"\n"
-							"We are not affiliated with Nintendo in any way.\n"
-							"Gamecube and Wii are trademarks of Nintendo.\n"
-							"The emulator is for educational purposes only\n"
-							"and should not be used to play games you do\n"
-							"not legally own.").arg(scm_rev_str));
-}
-
 void DMainWindow::OnLogWindowClosed()
 {
 	// this calls OnShowLogMan(false)
@@ -488,7 +455,55 @@ void DMainWindow::OnWiimoteSettings()
 	OpenConfigDialog(DConfigDialog::ICI_Wiimote);
 }
 
-void DMainWindow::OnReportIssue()
+void DMainWindow::on_actionReportIssue_triggered()
 {
 
+}
+
+void DMainWindow::on_actionWebsite_triggered()
+{
+	QDesktopServices::openUrl(QUrl("https://dolphin-emu.org/"));
+}
+
+void DMainWindow::on_actionDocumentation_triggered()
+{
+	QDesktopServices::openUrl(QUrl("https://dolphin-emu.org/docs/guides/"));
+}
+
+void DMainWindow::on_actionDevelopment_triggered()
+{
+	QDesktopServices::openUrl(QUrl("https://code.google.com/p/dolphin-emu/"));
+}
+
+void DMainWindow::on_actionAbout_triggered()
+{
+	// TODO: Improve SCM information
+	QMessageBox::about(this, tr("About Dolphin"),
+						tr(	"Dolphin SCM revision %1\n"
+							"Copyright (c) 2003-2012 Dolphin Team\n"
+							"\n"
+							"Dolphin is a Gamecube/Wii emulator, which was\n"
+							"originally written by F|RES and ector.\n"
+							"Today Dolphin is an open source project with too\n"
+							"many contributors to list.\n"
+							"If interested, just go check out the project page at\n"
+							"http://code.google.com/p/dolphin-emu/ .\n"
+							"\n"
+							"Special thanks to Bushing, Costis, CrowTRobo,\n"
+							"Marcan, Segher, Titanik, or9 and Hotquik for their\n"
+							"reverse engineering and docs/demos.\n"
+							"\n"
+							"Big thanks to Gilles Mouchard whose Microlib PPC\n"
+							"emulator gave our development a kickstart.\n"
+							"\n"
+							"Thanks to Frank Wille for his PowerPC disassembler,\n"
+							"which or9 and we modified to include Gekko specifics.\n"
+							"\n"
+							"Thanks to hcs/destop for their GC ADPCM decoder.\n"
+							"\n"
+							"We are not affiliated with Nintendo in any way.\n"
+							"Gamecube and Wii are trademarks of Nintendo.\n"
+							"The emulator is for educational purposes only\n"
+							"and should not be used to play games you do\n"
+							"not legally own.").arg(scm_rev_str));
 }

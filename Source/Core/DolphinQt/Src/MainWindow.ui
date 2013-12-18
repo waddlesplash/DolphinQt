@@ -82,6 +82,8 @@
     <addaction name="actionDocumentation"/>
     <addaction name="actionDevelopment"/>
     <addaction name="separator"/>
+    <addaction name="actionReportIssue"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
@@ -208,6 +210,11 @@
   <action name="actionPause">
    <property name="text">
     <string>Pause</string>
+   </property>
+  </action>
+  <action name="actionReportIssue">
+   <property name="text">
+    <string>Report issue...</string>
    </property>
   </action>
  </widget>

@@ -47,11 +47,14 @@ private slots:
 	void OnSwitchToGameList();
 	void OnSwitchToGameGrid();
 
-	void OnReportIssue();
-	void OnAbout();
-
 	void OnLogWindowClosed();
 	void OnLogSettingsWindowClosed();
+
+	void on_actionWebsite_triggered();
+	void on_actionDocumentation_triggered();
+	void on_actionDevelopment_triggered();
+	void on_actionReportIssue_triggered();
+	void on_actionAbout_triggered();
 
 	void OnCoreStateChanged(Core::EState state);
 
