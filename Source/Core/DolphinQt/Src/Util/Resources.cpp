@@ -1,6 +1,8 @@
 #include "Resources.h"
 
 #include "Volume.h"
+#include "FileUtil.h"
+#include "ConfigManager.h"
 
 QVector<QPixmap> Resources::platforms;
 QVector<QPixmap> Resources::regions;
@@ -35,24 +37,30 @@ void Resources::Init()
 	ratings[5].load(":/rating5.png");
 
 	pixmaps.resize(NUM_ICONS);
-	pixmaps[TOOLBAR_OPEN].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_REFRESH].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_BROWSE].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_PLAY].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_STOP].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_FULLSCREEN].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_SCREENSHOT].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_CONFIGURE].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_PLUGIN_GFX].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_PLUGIN_DSP].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_PLUGIN_GCPAD].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_PLUGIN_WIIMOTE].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_HELP].load(":/Dolphin.png");
-	pixmaps[TOOLBAR_PAUSE].load(":/Dolphin.png");
+	UpdatePixmaps();
+}
+
+void Resources::UpdatePixmaps()
+{
+	QString dir = QString::fromStdString(File::GetThemeDir(SConfig::GetInstance().m_LocalCoreStartupParameter.theme_name));
+	pixmaps[TOOLBAR_OPEN].load(dir + "open.png");
+	pixmaps[TOOLBAR_REFRESH].load(dir + "refresh.png");
+	pixmaps[TOOLBAR_BROWSE].load(dir + "browse.png");
+	pixmaps[TOOLBAR_PLAY].load(dir + "play.png");
+	pixmaps[TOOLBAR_STOP].load(dir + "stop.png");
+	pixmaps[TOOLBAR_PAUSE].load(dir + "pause.png");
+	pixmaps[TOOLBAR_FULLSCREEN].load(dir + "fullscreen.png");
+	pixmaps[TOOLBAR_SCREENSHOT].load(dir + "screenshot.png");
+	pixmaps[TOOLBAR_CONFIGURE].load(dir + "config.png");
+	pixmaps[TOOLBAR_PLUGIN_GFX].load(dir + "graphics.png");
+	pixmaps[TOOLBAR_PLUGIN_DSP].load(dir + "dsp.png");
+	pixmaps[TOOLBAR_PLUGIN_GCPAD].load(dir + "gcpad.png");
+	pixmaps[TOOLBAR_PLUGIN_WIIMOTE].load(dir + "wiimote.png");
+	pixmaps[TOOLBAR_HELP].load(":/Dolphin.png"); // TODO
 	// TODO: toolbar[MEMCARD];
 	// TODO: toolbar[HOTKEYS];
 	pixmaps[DOLPHIN_LOGO].load(":/Dolphin.png");
-	pixmaps[BANNER_MISSING].load(":/Dolphin.png");
+	pixmaps[BANNER_MISSING].load(dir + "nobanner.png");
 }
 
 QPixmap& Resources::GetRegionPixmap(DiscIO::IVolume::ECountry region)

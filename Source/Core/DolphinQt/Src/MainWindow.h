@@ -59,9 +59,7 @@ private slots:
 	void OnCoreStateChanged(Core::EState state);
 
 private:
-	void CreateMenus();
-	void CreateToolBars();
-	void CreateStatusBar();
+	void UpdateIcons();
 	void CreateDockWidgets();
 
 	void OpenConfigDialog(DConfigDialog::InitialConfigItem initialConfigItem);

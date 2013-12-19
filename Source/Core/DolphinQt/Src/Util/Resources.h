@@ -7,6 +7,7 @@ class Resources
 {
 public:
 	static void Init();
+	static void UpdatePixmaps();
 
 	static QPixmap& GetPlatformPixmap(int console);
 	static QPixmap& GetRegionPixmap(DiscIO::IVolume::ECountry region);
@@ -21,6 +22,7 @@ public:
 		TOOLBAR_BROWSE,
 		TOOLBAR_PLAY,
 		TOOLBAR_STOP,
+		TOOLBAR_PAUSE,
 		TOOLBAR_FULLSCREEN,
 		TOOLBAR_SCREENSHOT,
 		TOOLBAR_CONFIGURE,
@@ -29,7 +31,6 @@ public:
 		TOOLBAR_PLUGIN_GCPAD,
 		TOOLBAR_PLUGIN_WIIMOTE,
 		TOOLBAR_HELP,
-		TOOLBAR_PAUSE,
 		MEMCARD,
 		HOTKEYS,
 		DOLPHIN_LOGO,

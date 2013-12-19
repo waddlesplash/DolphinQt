@@ -27,15 +27,14 @@ DMainWindow::DMainWindow()
 	  renderWindow(NULL),
 	  is_stopping(false)
 {
-	Resources::Init();
 	ui->setupUi(this);
+	Resources::Init();
+	UpdateIcons();
 
 	QSettings ui_settings("Dolphin Team", "Dolphin");
 	DGameBrowser::Style gameBrowserStyle = (DGameBrowser::Style)ui_settings.value("gameList/layout", DGameBrowser::Style_List).toInt();
 	gameBrowser = new DGameBrowser(gameBrowserStyle, this);
 	ui->centralLayout->addWidget(gameBrowser);
-
-	setWindowIcon(Resources::GetIcon(Resources::DOLPHIN_LOGO));
 
 	if (restoreGeometry(ui_settings.value("main/geometry").toByteArray()) == false)
 	{
@@ -63,7 +62,7 @@ DMainWindow::DMainWindow()
 
 	connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(OnLoadIso()));
 	connect(ui->actionRefresh, SIGNAL(triggered()), this, SLOT(OnRefreshList()));
-	connect(ui->actionStart, SIGNAL(triggered()), this, SLOT(OnStartPause()));
+	connect(ui->actionPlay, SIGNAL(triggered()), this, SLOT(OnStartPause()));
 	connect(ui->actionPause, SIGNAL(triggered()), this, SLOT(OnStartPause()));
 	connect(ui->actionStop, SIGNAL(triggered()), this, SLOT(OnStop()));
 
@@ -97,6 +96,24 @@ DMainWindow::DMainWindow()
 DMainWindow::~DMainWindow()
 {
 
+}
+
+void DMainWindow::UpdateIcons()
+{
+	setWindowIcon(Resources::GetIcon(Resources::DOLPHIN_LOGO));
+
+	ui->actionOpen->setIcon(Resources::GetIcon(Resources::TOOLBAR_OPEN));
+	ui->actionRefresh->setIcon(Resources::GetIcon(Resources::TOOLBAR_REFRESH));
+	ui->actionAddFolder->setIcon(Resources::GetIcon(Resources::TOOLBAR_BROWSE));
+
+	/* "play/pause" is taken care of in OnCoreStateChanged() */
+	ui->actionStop->setIcon(Resources::GetIcon(Resources::TOOLBAR_STOP));
+
+	ui->actionConfigure->setIcon(Resources::GetIcon(Resources::TOOLBAR_CONFIGURE));
+	ui->actionGraphics->setIcon(Resources::GetIcon(Resources::TOOLBAR_PLUGIN_GFX));
+	ui->actionSound->setIcon(Resources::GetIcon(Resources::TOOLBAR_PLUGIN_DSP));
+	ui->actionGamecube->setIcon(Resources::GetIcon(Resources::TOOLBAR_PLUGIN_GCPAD));
+	ui->actionWiimote->setIcon(Resources::GetIcon(Resources::TOOLBAR_PLUGIN_WIIMOTE));
 }
 
 void DMainWindow::closeEvent(QCloseEvent* ev)
@@ -321,11 +338,11 @@ void DMainWindow::OnCoreStateChanged(Core::EState state)
 	bool is_paused = state == Core::CORE_PAUSE;
 
 	// Tool bar
-	ui->actionStart->setEnabled(is_not_initialized || is_running || is_paused);
+	ui->actionPlay->setEnabled(is_not_initialized || is_running || is_paused);
 	if (is_running)
-		ui->actionStart->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+		ui->actionPlay->setIcon(Resources::GetIcon(Resources::TOOLBAR_PAUSE));
 	else if (is_paused || is_not_initialized)
-		ui->actionStart->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+		ui->actionPlay->setIcon(Resources::GetIcon(Resources::TOOLBAR_PLAY));
 
 	ui->actionStop->setEnabled(is_running || is_paused);
 
