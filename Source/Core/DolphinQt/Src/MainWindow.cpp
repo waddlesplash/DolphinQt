@@ -23,11 +23,10 @@
 DMainWindow::DMainWindow()
 	: QMainWindow(0),
 	  ui(new Ui::MainWindow),
-	  logWindow(NULL),
-	  renderWindow(NULL),
 	  is_stopping(false)
 {
 	ui->setupUi(this);
+
 	Resources::Init();
 	UpdateIcons();
 
@@ -50,6 +49,7 @@ DMainWindow::DMainWindow()
 	}
 	restoreState(ui_settings.value("main/state").toByteArray());
 	show();
+	ui->actionShowToolbar->setChecked(ui->toolBar->isVisible());
 
 	CreateDockWidgets();
 
@@ -62,6 +62,9 @@ DMainWindow::DMainWindow()
 
 	connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(OnLoadIso()));
 	connect(ui->actionRefresh, SIGNAL(triggered()), this, SLOT(OnRefreshList()));
+	connect(ui->actionAddFolder, SIGNAL(triggered()), this, SLOT(OnBrowseIso()));
+	connect(ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
+
 	connect(ui->actionPlay, SIGNAL(triggered()), this, SLOT(OnStartPause()));
 	connect(ui->actionPause, SIGNAL(triggered()), this, SLOT(OnStartPause()));
 	connect(ui->actionStop, SIGNAL(triggered()), this, SLOT(OnStop()));
@@ -71,21 +74,6 @@ DMainWindow::DMainWindow()
 	connect(ui->actionSound, SIGNAL(triggered()), this, SLOT(OnSoundSettings()));
 	connect(ui->actionGamecube, SIGNAL(triggered()), this, SLOT(OnGCPadSettings()));
 	connect(ui->actionWiimote, SIGNAL(triggered()), this, SLOT(OnWiimoteSettings()));
-
-	connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(OnLoadIso()));
-	connect(ui->actionAddFolder, SIGNAL(triggered()), this, SLOT(OnBrowseIso()));
-	connect(ui->actionRefresh, SIGNAL(triggered()), this, SLOT(OnRefreshList()));
-	connect(ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
-
-	/* not implemented yet
-	connect(showLogManAct, SIGNAL(toggled(bool)), this, SLOT(OnShowLogMan(bool)));
-	connect(showLogSettingsAct, SIGNAL(toggled(bool)), this, SLOT(OnShowLogSettings(bool)));
-	*/
-	connect(ui->actionShowToolbar, SIGNAL(toggled(bool)), this, SLOT(OnShowToolbar(bool)));
-	/* not implemented yet
-	connect(gameBrowserAsListAct, SIGNAL(triggered()), this, SLOT(OnSwitchToGameList()));
-	connect(gameBrowserAsGridAct, SIGNAL(triggered()), this, SLOT(OnSwitchToGameGrid()));
-	*/
 
 	connect(this, SIGNAL(CoreStateChanged(Core::EState)), this, SLOT(OnCoreStateChanged(Core::EState)));
 
@@ -140,16 +128,12 @@ void DMainWindow::closeEvent(QCloseEvent* ev)
 void DMainWindow::CreateDockWidgets()
 {
 	logWindow = new DLogWindow(this);
-	connect(logWindow, SIGNAL(Closed()), this, SLOT(OnLogWindowClosed()));
-
 	logSettings = new DLogSettingsDock(this);
-	connect(logSettings, SIGNAL(Closed()), this, SLOT(OnLogSettingsWindowClosed()));
-
 
 	addDockWidget(Qt::RightDockWidgetArea, logWindow);
 	logWindow->setVisible(SConfig::GetInstance().m_InterfaceLogWindow);
 
-	addDockWidget(Qt::RightDockWidgetArea, logSettings);
+	addDockWidget(Qt::LeftDockWidgetArea, logSettings);
 	logSettings->setVisible(SConfig::GetInstance().m_InterfaceLogConfigWindow);
 }
 
@@ -385,67 +369,11 @@ void DMainWindow::OnRefreshList()
 			dynamic_cast<QWidget*>(*it)->setEnabled(true);
 }
 
-void DMainWindow::OnShowLogMan(bool a)
-{
-	if (a)
-	{
-		logWindow->setVisible(true);
-		SConfig::GetInstance().m_InterfaceLogWindow = true;
-	}
-	else if (logWindow)
-	{
-		logWindow->setVisible(false);
-		SConfig::GetInstance().m_InterfaceLogWindow = false;
-	}
-}
-
-void DMainWindow::OnShowLogSettings(bool a)
-{
-	if (a)
-	{
-		logSettings->setVisible(true);
-		SConfig::GetInstance().m_InterfaceLogConfigWindow = true;
-	}
-	else if (logSettings)
-	{
-		logSettings->setVisible(false);
-		SConfig::GetInstance().m_InterfaceLogConfigWindow= false;
-	}
-}
-
-void DMainWindow::OnShowToolbar(bool a)
-{
-	ui->toolBar->setVisible(a);
-}
-
-void DMainWindow::OnSwitchToGameList()
-{
-	gameBrowser->SetStyle(DGameBrowser::Style_List);
-}
-
-void DMainWindow::OnSwitchToGameGrid()
-{
-	gameBrowser->SetStyle(DGameBrowser::Style_Grid);
-}
-
-void DMainWindow::OnLogWindowClosed()
-{
-	// this calls OnShowLogMan(false)
-	// showLogManAct->setChecked(false);
-}
-
-void DMainWindow::OnLogSettingsWindowClosed()
-{
-	// this calls OnShowLogMan(false)
-	// showLogSettingsAct->setChecked(false);
-}
-
 void DMainWindow::OpenConfigDialog(DConfigDialog::InitialConfigItem initialConfigItem)
 {
 	dialog->showPage(initialConfigItem);
 	dialog->show();
 }
-
 
 void DMainWindow::OnConfigure()
 {

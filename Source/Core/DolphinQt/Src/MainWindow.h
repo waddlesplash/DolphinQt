@@ -41,15 +41,6 @@ private slots:
 	void OnGCPadSettings();
 	void OnWiimoteSettings();
 
-    void OnShowLogMan(bool a);
-    void OnShowLogSettings(bool a);
-    void OnShowToolbar(bool a);
-	void OnSwitchToGameList();
-	void OnSwitchToGameGrid();
-
-	void OnLogWindowClosed();
-	void OnLogSettingsWindowClosed();
-
 	void on_actionWebsite_triggered();
 	void on_actionDocumentation_triggered();
 	void on_actionDevelopment_triggered();

@@ -78,9 +78,9 @@ int main(int argc, char* argv[])
 	QApplication app(argc, argv);
 	if (!cpu_info.bSSE2)
 	{
-		QMessageBox::information(NULL,"Hardware does not support","Hi,\n\nDolphin requires that your CPU has support for SSE2 extensions.\n"
-					"Unfortunately your CPU does not support them, so Dolphin will not run.\n\n"
-					"Sayonara!\n");
+		QMessageBox::critical(NULL, QObject::tr("Unsupported Hardware"),
+						   QObject::tr("Dolphin requires a CPU with support for SSE2 extensions.\n"
+							  "Your CPU doesn't support these. Try running Dolphin on a newer computer."));
 		return 0;
 	}
 
