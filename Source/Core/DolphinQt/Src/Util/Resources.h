@@ -38,12 +38,8 @@ public:
 	};
 
 private:
-	Resources();
-	~Resources();
-
-	static Resources* instance;
-	QVector<QPixmap> platforms;
-	QVector<QPixmap> regions;
-	QVector<QPixmap> ratings;
-	QVector<QPixmap> pixmaps;
+	static QVector<QPixmap> platforms;
+	static QVector<QPixmap> regions;
+	static QVector<QPixmap> ratings;
+	static QVector<QPixmap> pixmaps;
 };

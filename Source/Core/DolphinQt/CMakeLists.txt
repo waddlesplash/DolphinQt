@@ -82,6 +82,8 @@ qt_moc(MOC_SRCS Src/Config/ConfigAudio.h
                 Src/MainWindow.h
                 Src/RenderWindow.h)
 qt_ui(UIC_SRCS Src/MainWindow.ui)
-add_executable(${EXEGUI} ${SRCS} ${MOC_SRCS} ${UIC_SRCS})
+qt_res(QRC_SRCS Resources/Resources.qrc)
+
+add_executable(${EXEGUI} ${SRCS} ${MOC_SRCS} ${UIC_SRCS} ${QRC_SRCS})
 target_link_libraries(${EXEGUI} ${LIBS} ${QT_LIBRARIES})
 install(TARGETS ${EXEGUI} RUNTIME DESTINATION ${bindir})

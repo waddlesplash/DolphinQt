@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/">
+        <file>rating0.png</file>
+        <file>rating5.png</file>
+        <file>Flag_France.png</file>
+        <file>Flag_Italy.png</file>
+        <file>rating1.png</file>
+        <file>rating2.png</file>
+        <file>rating3.png</file>
+        <file>Flag_Germany.png</file>
+        <file>rating4.png</file>
+        <file>isoprop_file.png</file>
+        <file>Flag_Japan.png</file>
+        <file>Flag_Taiwan.png</file>
+        <file>Flag_Unknown.png</file>
+        <file>Flag_Europe.png</file>
+        <file>Flag_SDK.png</file>
+        <file>Flag_USA.png</file>
+        <file>isoprop_folder.png</file>
+        <file>isoprop_disc.png</file>
+        <file>Flag_Korea.png</file>
+        <file>Platform_Wii.png</file>
+        <file>Dolphin.png</file>
+        <file>Platform_Gamecube.png</file>
+        <file>Platform_Wad.png</file>
+        <file>toolbar_debugger_delete.png</file>
+        <file>toolbar_add_memorycheck.png</file>
+        <file>toolbar_add_breakpoint.png</file>
+        <file>dolphin_logo.png</file>
+    </qresource>
+</RCC>
