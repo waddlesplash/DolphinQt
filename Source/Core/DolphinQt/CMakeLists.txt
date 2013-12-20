@@ -16,7 +16,7 @@ set(SRCS Src/Config/ConfigAudio.cpp
         Src/Util/Resources.cpp
         Src/GameList.cpp
         Src/ISOFile.cpp
-        Src/LogWindow.cpp
+        Src/LogWidgets.cpp
         Src/main.cpp
         Src/MainWindow.cpp
         Src/RenderWindow.cpp)
@@ -78,10 +78,12 @@ qt_moc(MOC_SRCS Src/Config/ConfigAudio.h
                 Src/Config/ConfigWiimote.h
                 Src/Util/Util.h
                 Src/GameList.h
-                Src/LogWindow.h
+                Src/LogWidgets.h
                 Src/MainWindow.h
                 Src/RenderWindow.h)
-qt_ui(UIC_SRCS Src/MainWindow.ui)
+qt_ui(UIC_SRCS Src/MainWindow.ui
+               Src/LogWindow.ui
+               Src/LogSettings.ui)
 qt_res(QRC_SRCS Resources/Resources.qrc)
 
 add_executable(${EXEGUI} ${SRCS} ${MOC_SRCS} ${UIC_SRCS} ${QRC_SRCS})

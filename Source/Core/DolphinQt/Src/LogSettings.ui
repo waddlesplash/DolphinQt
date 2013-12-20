@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LogSettings</class>
+ <widget class="QDockWidget" name="LogSettings">
+  <property name="minimumSize">
+   <size>
+    <width>280</width>
+    <height>333</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Log Settings</string>
+  </property>
+  <widget class="QWidget" name="logSettingsContents">
+   <layout class="QVBoxLayout" name="logSettingsLayout">
+    <item>
+     <widget class="QGroupBox" name="verbosityGrp">
+      <property name="title">
+       <string>Verbosity</string>
+      </property>
+      <layout class="QVBoxLayout" name="verbosityLayout"/>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="optionsGrp">
+      <property name="title">
+       <string>Options</string>
+      </property>
+      <layout class="QVBoxLayout" name="optionsLayout">
+       <item>
+        <widget class="QCheckBox" name="chkToFile">
+         <property name="text">
+          <string>Write to file</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkToConsole">
+         <property name="text">
+          <string>Write to console</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkToWindow">
+         <property name="text">
+          <string>Write to window</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="togAllBtn">
+      <property name="text">
+       <string>Toggle All</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QListWidget" name="listVerbosity"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,18 +1,20 @@
 #include <QDockWidget>
-#include <QVector>
+#include <QList>
 
 #include "LogManager.h"
 
-class QPlainTextEdit;
 class QCheckBox;
-class QStandardItemModel;
-class DLogSettingsDock : public QDockWidget
+class QRadioButton;
+namespace Ui {
+class LogSettings;
+}
+class DLogSettings : public QDockWidget
 {
 	Q_OBJECT
 
 public:
-	DLogSettingsDock(QWidget * p = NULL, Qt::WindowFlags flags = 0);
-	~DLogSettingsDock();
+	DLogSettings(QWidget * p = NULL, Qt::WindowFlags flags = 0);
+	~DLogSettings();
 
 signals:
 	void Closed();
@@ -21,14 +23,18 @@ protected:
 	void closeEvent(QCloseEvent* e);
 
 private slots:
-	void OnToggleChannels();
+	void on_togAllBtn_clicked();
 
 private:
-	QVector<QCheckBox*> logChannels;
-	QStandardItemModel* channelModel;
+	Ui::LogSettings *ui;
+	QList<QCheckBox*> logChannels;
+	QList<QRadioButton*> logLevelsRadio;
 	bool enableAllChannels;
 };
 
+namespace Ui {
+class LogWindow;
+}
 class DLogWindow : public QDockWidget, LogListener
 {
 	Q_OBJECT
@@ -44,7 +50,7 @@ protected:
 	void closeEvent(QCloseEvent* e);
 
 private:
-	QPlainTextEdit* logEdit;
+	Ui::LogWindow *ui;
 
 	// LogListener
 	void Log(LogTypes::LOG_LEVELS, const char *msg);

@@ -10,7 +10,7 @@
 #include <Core.h>
 
 class DLogWindow;
-class DLogSettingsDock;
+class DLogSettings;
 class DGameBrowser;
 namespace Ui {
 class MainWindow;
@@ -66,7 +66,7 @@ private:
 	DGameBrowser* gameBrowser;
 	QWidget* renderWindow;
 	DLogWindow* logWindow;
-	DLogSettingsDock* logSettings;
+	DLogSettings* logSettings;
 	DConfigDialog* dialog;
 
 	// Emulation stopping closes the render window; closing the render window also stops emulation

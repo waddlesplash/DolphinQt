@@ -8,7 +8,7 @@
 
 #include "GameList.h"
 #include "MainWindow.h"
-#include "LogWindow.h"
+#include "LogWidgets.h"
 #include "Util/Resources.h"
 #include "Util/Util.h"
 #include "Config/ConfigMain.h"
@@ -128,7 +128,7 @@ void DMainWindow::closeEvent(QCloseEvent* ev)
 void DMainWindow::CreateDockWidgets()
 {
 	logWindow = new DLogWindow(this);
-	logSettings = new DLogSettingsDock(this);
+	logSettings = new DLogSettings(this);
 
 	addDockWidget(Qt::RightDockWidgetArea, logWindow);
 	logWindow->setVisible(SConfig::GetInstance().m_InterfaceLogWindow);
