@@ -83,7 +83,7 @@ DMainWindow::DMainWindow()
 
 DMainWindow::~DMainWindow()
 {
-
+	delete ui;
 }
 
 void DMainWindow::UpdateIcons()
