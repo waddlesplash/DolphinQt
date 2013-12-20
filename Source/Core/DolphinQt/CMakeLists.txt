@@ -19,7 +19,7 @@ set(SRCS Src/Config/ConfigAudio.cpp
         Src/LogWidgets.cpp
         Src/main.cpp
         Src/MainWindow.cpp
-        Src/RenderWindow.cpp)
+        Src/RenderWidget.cpp)
 
 set(LIBS    core
             ${LZO}
@@ -80,7 +80,7 @@ qt_moc(MOC_SRCS Src/Config/ConfigAudio.h
                 Src/GameList.h
                 Src/LogWidgets.h
                 Src/MainWindow.h
-                Src/RenderWindow.h)
+                Src/RenderWidget.h)
 qt_ui(UIC_SRCS Src/MainWindow.ui
                Src/LogWindow.ui
                Src/LogSettings.ui)

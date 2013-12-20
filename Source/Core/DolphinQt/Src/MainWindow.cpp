@@ -10,7 +10,6 @@
 #include "MainWindow.h"
 #include "LogWidgets.h"
 #include "Util/Resources.h"
-#include "Util/Util.h"
 #include "Config/ConfigMain.h"
 
 #include "BootManager.h"
@@ -33,7 +32,7 @@ DMainWindow::DMainWindow()
 	QSettings ui_settings("Dolphin Team", "Dolphin");
 	DGameBrowser::Style gameBrowserStyle = (DGameBrowser::Style)ui_settings.value("gameList/layout", DGameBrowser::Style_List).toInt();
 	gameBrowser = new DGameBrowser(gameBrowserStyle, this);
-	ui->centralLayout->addWidget(gameBrowser);
+	ui->centralWidget->addWidget(gameBrowser);
 
 	if (restoreGeometry(ui_settings.value("main/geometry").toByteArray()) == false)
 	{
@@ -140,8 +139,9 @@ void DMainWindow::CreateDockWidgets()
 void DMainWindow::StartGame(const std::string& filename)
 {
 	// TODO: Disable play toolbar action, replace with pause
-	renderWindow = new DRenderWindow;
+	renderWindow = new DRenderWidget;
 	renderWindow->setWindowTitle(tr("Dolphin")); // TODO: Other window title..
+	renderWindow->setWindowIcon(this->windowIcon());
 
 	// TODO: When rendering to main, this won't resize the parent window..
 	if (!SConfig::GetInstance().m_LocalCoreStartupParameter.bRenderToMain)
@@ -156,15 +156,21 @@ void DMainWindow::StartGame(const std::string& filename)
 	}
 	else
 	{
-		ui->centralLayout->addWidget(renderWindow);
+		ui->centralWidget->addWidget(renderWindow);
+		ui->centralWidget->setCurrentWidget(renderWindow);
 	}
 
 	if (!BootManager::BootCore(filename))
 	{
 		QMessageBox(QMessageBox::Critical, tr("Fatal error"), tr("Failed to init Core"), QMessageBox::Ok, this);
 		// Destroy the renderer frame when not rendering to main
-		if (!SConfig::GetInstance().m_LocalCoreStartupParameter.bRenderToMain)
-			renderWindow->close(); // TODO: .. meh, this will conflict with the code above, endless loop and stuff
+		if (!SConfig::GetInstance().m_LocalCoreStartupParameter.bRenderToMain) {
+			if (SConfig::GetInstance().m_LocalCoreStartupParameter.bRenderToMain)
+				ui->centralWidget->removeWidget(renderWindow);
+			else
+				renderWindow->close();
+		}
+		delete renderWindow;
 		renderWindow = NULL;
 	}
 	else
@@ -252,9 +258,6 @@ void DMainWindow::DoStop()
 		// TODO: Allow screensaver again
 		// TODO: Restore original window title
 
-		renderWindow->close();
-		renderWindow = NULL;
-
 		// TODO: Show cursor again if it was hidden before (SConfig::GetInstance().m_LocalCoreStartupParameter.bHideCursor)
 
 		// TODO: Return from fullscreen if necessary (DoFullscreen in the wx code)
@@ -264,12 +267,12 @@ void DMainWindow::DoStop()
 		//if (m_bBatchMode)
 		//	Close(true);
 
-		// TODO:
-		// If using auto size with render to main, reset the application size.
-/*        if (SConfig::GetInstance().m_LocalCoreStartupParameter.bRenderToMain &&
-				SConfig::GetInstance().m_LocalCoreStartupParameter.bRenderWindowAutoSize)
-			SetSize(SConfig::GetInstance().m_LocalCoreStartupParameter.iWidth,
-					SConfig::GetInstance().m_LocalCoreStartupParameter.iHeight);*/
+		if (SConfig::GetInstance().m_LocalCoreStartupParameter.bRenderToMain)
+			ui->centralWidget->removeWidget(renderWindow);
+		else
+			renderWindow->close();
+		delete renderWindow;
+		renderWindow = NULL;
 
 		emit CoreStateChanged(Core::CORE_UNINITIALIZED);
 	}
@@ -334,7 +337,6 @@ void DMainWindow::OnCoreStateChanged(Core::EState state)
 
 	// Game list
 	gameBrowser->setEnabled(is_not_initialized);
-	gameBrowser->setVisible(is_not_initialized);
 
 	// TODO: Update menu items
 }
@@ -355,17 +357,7 @@ void DMainWindow::OnBrowseIso()
 
 void DMainWindow::OnRefreshList()
 {
-	// Disable all child widgets except the progress bar (gameBrowser will take care of disabling the game list)
-	for (QObjectList::const_iterator it = children().begin(); it != children().end(); ++it)
-		if ((*it)->isWidgetType() && *it != ui->centralLayout)
-			dynamic_cast<QWidget*>(*it)->setEnabled(false);
-
 	gameBrowser->ScanForIsos();
-
-	// Re-enable child widgets
-	for (QObjectList::const_iterator it = children().begin(); it != children().end(); ++it)
-		if ((*it)->isWidgetType() && *it != ui->centralLayout)
-			dynamic_cast<QWidget*>(*it)->setEnabled(true);
 }
 
 void DMainWindow::OpenConfigDialog(DConfigDialog::InitialConfigItem initialConfigItem)

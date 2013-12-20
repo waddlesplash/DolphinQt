@@ -1,16 +1,16 @@
 #include "ConfigManager.h"
 
-#include "RenderWindow.h"
+#include "RenderWidget.h"
 
 #include <QMessageBox>
 
-DRenderWindow::DRenderWindow(QWidget* p)
+DRenderWidget::DRenderWidget(QWidget* p)
 	: QWidget(p)
 {
 	setCursor(QCursor(Qt::BlankCursor));
 }
 
-void DRenderWindow::closeEvent(QCloseEvent* ev)
+void DRenderWidget::closeEvent(QCloseEvent* ev)
 {
 	SConfig::GetInstance().m_LocalCoreStartupParameter.iRenderWindowXPos = pos().x();
 	SConfig::GetInstance().m_LocalCoreStartupParameter.iRenderWindowYPos = pos().y();

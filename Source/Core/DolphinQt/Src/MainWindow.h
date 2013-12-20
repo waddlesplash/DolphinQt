@@ -4,8 +4,7 @@
 #include <QMainWindow>
 #include <QSettings>
 #include "Config/ConfigMain.h"
-#include "RenderWindow.h"
-#include "Util/Util.h"
+#include "RenderWidget.h"
 
 #include <Core.h>
 
@@ -64,7 +63,7 @@ private:
 
 	Ui::MainWindow *ui;
 	DGameBrowser* gameBrowser;
-	QWidget* renderWindow;
+	DRenderWidget* renderWindow;
 	DLogWindow* logWindow;
 	DLogSettings* logSettings;
 	DConfigDialog* dialog;

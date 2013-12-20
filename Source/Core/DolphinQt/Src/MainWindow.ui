@@ -19,8 +19,7 @@
   <property name="windowTitle">
    <string>Dolphin</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="centralLayout"/>
+  <widget class="QStackedWidget" name="centralWidget">
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

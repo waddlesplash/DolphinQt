@@ -1,14 +1,14 @@
-#ifndef RENDERWINDOW_H
-#define RENDERWINDOW_H
+#ifndef RENDERWIDGET_H
+#define RENDERWIDGET_H
 
 #include <QWidget>
 
-class DRenderWindow : public QWidget
+class DRenderWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	DRenderWindow(QWidget* p = NULL);
+	DRenderWidget(QWidget* p = NULL);
 
 	// Some window managers start window dragging if an "empty" window area was clicked.
 	// Prevent this by intercepting the mouse press event.
@@ -21,4 +21,4 @@ signals:
 	void Closed();
 };
 
-#endif // RENDERWINDOW_H
+#endif // RENDERWIDGET_H
