@@ -10,7 +10,7 @@ class DConfigAudio : public QWidget
 	Q_OBJECT
 
 public:
-	DConfigAudio(QWidget* parent = NULL);
+	DConfigAudio(QWidget* p = NULL);
 
 public slots:
 	void Reset();

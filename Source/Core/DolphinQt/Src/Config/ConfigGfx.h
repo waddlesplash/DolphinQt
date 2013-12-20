@@ -16,7 +16,7 @@ class DConfigGfx : public QTabWidget
 	};
 
 public:
-	DConfigGfx(QWidget* parent = NULL);
+	DConfigGfx(QWidget* p = NULL);
 
 public slots:
 	void Reset();

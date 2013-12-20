@@ -5,7 +5,7 @@ class DConfigWiimote : public QWidget
 	Q_OBJECT
 
 public:
-	DConfigWiimote(QWidget* parent = NULL);
+	DConfigWiimote(QWidget* p = NULL);
 
 public slots:
 	void Reset();

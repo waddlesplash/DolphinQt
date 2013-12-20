@@ -12,7 +12,7 @@
 #include "ConfigManager.h"
 
 
-QWidget* DConfigMainGeneralTab::CreateCoreTabWidget(QWidget* parent)
+QWidget* DConfigMainGeneralTab::CreateCoreTabWidget(QWidget* p)
 {
 	QWidget* tab = new QWidget(this);
 
@@ -83,7 +83,7 @@ QWidget* DConfigMainGeneralTab::CreateCoreTabWidget(QWidget* parent)
 	return tab;
 }
 
-QWidget* DConfigMainGeneralTab::CreatePathsTabWidget(QWidget* parent)
+QWidget* DConfigMainGeneralTab::CreatePathsTabWidget(QWidget* p)
 {
 	QWidget* tab = new QWidget(this);
 
@@ -134,7 +134,7 @@ QWidget* DConfigMainGeneralTab::CreatePathsTabWidget(QWidget* parent)
 	return tab;
 }
 
-DConfigMainGeneralTab::DConfigMainGeneralTab(QWidget* parent) : QTabWidget(parent), paths_changed(false)
+DConfigMainGeneralTab::DConfigMainGeneralTab(QWidget* p) : QTabWidget(p), paths_changed(false)
 {
 	addTab(CreateCoreTabWidget(this), tr("Core"));
 	addTab(CreatePathsTabWidget(this), tr("Paths"));

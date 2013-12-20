@@ -28,7 +28,7 @@ public:
 		ICI_Wiimote = 4,
 	};
 
-	DConfigDialog(QWidget* parent = NULL);
+	DConfigDialog(QWidget* p = NULL);
 	DConfigMainGeneralTab* generalWidget;
 
 public slots:

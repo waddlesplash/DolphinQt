@@ -7,7 +7,7 @@
 class DCheckBoxList : public QTreeView
 {
 public:
-	DCheckBoxList(QWidget* parent = NULL) : QTreeView(parent)
+	DCheckBoxList(QWidget* p = NULL) : QTreeView(p)
 	{
 //		setFlags(Qt::ItemIsUserCheckable);
 		setModel(model = new QStandardItemModel);
@@ -26,8 +26,8 @@ private:
 	QStandardItemModel* model;
 };
 
-DLogSettingsDock::DLogSettingsDock(QWidget * parent, Qt::WindowFlags flags)
-		: QDockWidget(tr("Log Settings"), parent, flags)
+DLogSettingsDock::DLogSettingsDock(QWidget * p, Qt::WindowFlags flags)
+		: QDockWidget(tr("Log Settings"), p, flags)
 		, enableAllChannels(true)
 {
 	LogManager* logManager = LogManager::GetInstance();
@@ -116,15 +116,15 @@ void DLogSettingsDock::OnToggleChannels()
 	enableAllChannels = !enableAllChannels;
 }
 
-void DLogSettingsDock::closeEvent(QCloseEvent* event)
+void DLogSettingsDock::closeEvent(QCloseEvent* e)
 {
 	// TODO: Handle this differently, since we need to keep the window open if the "really stop emulation?" question was answered with "no"
 	emit Closed();
-	QWidget::closeEvent(event);
+	QWidget::closeEvent(e);
 }
 
-DLogWindow::DLogWindow(QWidget * parent, Qt::WindowFlags flags)
-		: QDockWidget(tr("Logging"), parent, flags)
+DLogWindow::DLogWindow(QWidget * p, Qt::WindowFlags flags)
+		: QDockWidget(tr("Logging"), p, flags)
 {
 	LogManager* logManager = LogManager::GetInstance();
 
@@ -148,10 +148,10 @@ DLogWindow::DLogWindow(QWidget * parent, Qt::WindowFlags flags)
 	topLayout->addWidget(fontBox);
 	topLayout->addWidget(wordWrapCB);
 
-	DLayoutWidgetV* layout = new DLayoutWidgetV;
-	layout->addWidget(topLayout);
-	layout->addWidget(logEdit);
-	setWidget(layout);
+	DLayoutWidgetV* otherLayout = new DLayoutWidgetV;
+	otherLayout->addWidget(topLayout);
+	otherLayout->addWidget(logEdit);
+	setWidget(otherLayout);
 
 	// setup other stuff
 	// TODO: Check if logging is actually enabled
@@ -173,8 +173,8 @@ void DLogWindow::Log(LogTypes::LOG_LEVELS, const char *msg)
 	// logEdit->appendPlainText(QString(msg));
 }
 
-void DLogWindow::closeEvent(QCloseEvent* event)
+void DLogWindow::closeEvent(QCloseEvent* e)
 {
 	emit Closed();
-	QWidget::closeEvent(event);
+	QWidget::closeEvent(e);
 }

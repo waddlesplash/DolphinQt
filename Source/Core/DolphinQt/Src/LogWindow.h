@@ -11,14 +11,14 @@ class DLogSettingsDock : public QDockWidget
 	Q_OBJECT
 
 public:
-	DLogSettingsDock(QWidget * parent = NULL, Qt::WindowFlags flags = 0);
+	DLogSettingsDock(QWidget * p = NULL, Qt::WindowFlags flags = 0);
 	~DLogSettingsDock();
 
 signals:
 	void Closed();
 
 protected:
-	void closeEvent(QCloseEvent* event);
+	void closeEvent(QCloseEvent* e);
 
 private slots:
 	void OnToggleChannels();
@@ -34,14 +34,14 @@ class DLogWindow : public QDockWidget, LogListener
 	Q_OBJECT
 
 public:
-	DLogWindow(QWidget * parent = NULL, Qt::WindowFlags flags = 0);
+	DLogWindow(QWidget * p = NULL, Qt::WindowFlags flags = 0);
 	~DLogWindow();
 
 signals:
 	void Closed();
 
 protected:
-	void closeEvent(QCloseEvent* event);
+	void closeEvent(QCloseEvent* e);
 
 private:
 	QPlainTextEdit* logEdit;

@@ -1,6 +1,6 @@
 #include "ConfigWiimote.h"
 
-DConfigWiimote::DConfigWiimote(QWidget* parent): QWidget(parent)
+DConfigWiimote::DConfigWiimote(QWidget* p): QWidget(p)
 {
 
 }

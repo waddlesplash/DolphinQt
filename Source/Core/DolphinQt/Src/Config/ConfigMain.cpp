@@ -18,7 +18,7 @@
 #include "../Util/Resources.h"
 
 
-DConfigDialog::DConfigDialog(QWidget* parent) : QDialog(parent)
+DConfigDialog::DConfigDialog(QWidget* p) : QDialog(p)
 {
 	setModal(true);
 	setWindowTitle(tr("Dolphin Configuration"));

@@ -3,7 +3,7 @@
 #include <QRadioButton>
 #include "Util.h"
 
-DControlStateManager::DControlStateManager(QObject* parent) : QObject(parent)
+DControlStateManager::DControlStateManager(QObject* p) : QObject(p)
 {
 }
 

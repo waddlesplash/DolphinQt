@@ -270,13 +270,13 @@ void DGameList::RefreshView()
 
 		sourceModel->setItem(i, 5, new QStandardItem(NiceSizeFormat(items[i].GetFileSize())));
 
-		int state;
+		int EmuState;
 		IniFile ini;
 		ini.Load((std::string(File::GetUserPath(D_GAMESETTINGS_IDX)) + (items[i].GetUniqueID()) + ".ini").c_str());
-		ini.Get("EmuState", "EmulationStateId", &state);
+		ini.Get("EmuState", "EmulationStateId", &EmuState);
 		QStandardItem* ratingItem = new QStandardItem;
-		ratingItem->setData(QVariant::fromValue(Resources::GetRatingPixmap(state)), Qt::DecorationRole);
-		ratingItem->setSizeHint(Resources::GetRatingPixmap(state).size()*0.6f);
+		ratingItem->setData(QVariant::fromValue(Resources::GetRatingPixmap(EmuState)), Qt::DecorationRole);
+		ratingItem->setSizeHint(Resources::GetRatingPixmap(EmuState).size()*0.6f);
 		sourceModel->setItem(i, 6, ratingItem);
 	}
 	QStringList columnTitles;
@@ -408,36 +408,41 @@ void DGameTable::OnItemActivated(const QModelIndex& index)
 		emit StartGame();
 }
 
-void DGameTable::resizeEvent(QResizeEvent* event)
+void DGameTable::resizeEvent(QResizeEvent* e)
 {
 	// Dynamically adjust the number of columns so that the central area is always filled
 	if (num_columns > 1)
-		if (event->size().width() < columnViewportPosition(num_columns-1) + columnWidth(0) - columnViewportPosition(0))
+		if (e->size().width() < columnViewportPosition(num_columns-1) + columnWidth(0) - columnViewportPosition(0))
 			RebuildGrid();
 
-	if (event->size().width() > columnViewportPosition(num_columns-1) + 2*columnWidth(0) - columnViewportPosition(0))
+	if (e->size().width() > columnViewportPosition(num_columns-1) + 2*columnWidth(0) - columnViewportPosition(0))
 		RebuildGrid();
 }
 
 class DGameListProgressBar : public QProgressBar, public AbstractProgressBar
 {
 public:
-	DGameListProgressBar(QWidget* parent = NULL) : QProgressBar(parent) {}
+	DGameListProgressBar(QWidget* p = NULL) : QProgressBar(p) {}
 	virtual ~DGameListProgressBar() {}
 
-	void SetValue(int value, std::string FileName) { setValue(value); setFormat(tr("Scanning ") + QString(FileName.c_str())); }
-	void SetRange(int min, int max) { setRange(min, max); }
+	void SetValue(int newValue, std::string FileName) { setValue(newValue); setFormat(tr("Scanning ") + QString(FileName.c_str())); }
+	void SetRange(int newMin, int newMax) { setRange(newMin, newMax); }
 	void SetVisible(bool visible) { setVisible(visible); }
 };
 
-DGameBrowser::DGameBrowser(Style initialStyle, QWidget* parent) : progBar(new DGameListProgressBar), text(new QLabel), abstrGameBrowser(progBar), gameBrowser(NULL), style(initialStyle)
+DGameBrowser::DGameBrowser(Style initialStyle, QWidget* p)
+	: progBar(new DGameListProgressBar),
+	  text(new QLabel),
+	  abstrGameBrowser(progBar),
+	  gameBrowser(NULL),
+	  style(initialStyle)
 {
 	progBar->SetVisible(false);
 
 	mainLayout = new QGridLayout;
 	mainLayout->addWidget(progBar, 2, 0);
 	text->setText("<i>Could not find any GC/Wii ISOs. <a href='#'>Click here</a> to browse...</i>");
-	connect(text, SIGNAL(linkActivated(const QString &)), parent, SLOT(OnBrowseIso()));
+	connect(text, SIGNAL(linkActivated(const QString &)), p, SLOT(OnBrowseIso()));
 	text->setVisible(false);
 	mainLayout->addWidget(text, 0, 0);
 	SetStyle(style);
@@ -463,14 +468,14 @@ void DGameBrowser::ScanForIsos()
 	dynamic_cast<QWidget*>(gameBrowser)->setEnabled(true);
 }
 
-void DGameBrowser::SetStyle(Style layout)
+void DGameBrowser::SetStyle(Style layoutStyle)
 {
-	if (style == layout && gameBrowser) return;
-	style = layout;
+	if (style == layoutStyle && gameBrowser) return;
+	style = layoutStyle;
 
 	if (gameBrowser) dynamic_cast<QWidget*>(gameBrowser)->close();
-	if (layout == Style_List) gameBrowser = new DGameList(abstrGameBrowser, this);
-	else if (layout == Style_Grid) gameBrowser = new DGameTable(abstrGameBrowser, this);
+	if (layoutStyle == Style_List) gameBrowser = new DGameList(abstrGameBrowser, this);
+	else if (layoutStyle == Style_Grid) gameBrowser = new DGameTable(abstrGameBrowser, this);
 
 	gameBrowser->RefreshView();
 	connect(dynamic_cast<QObject*>(gameBrowser), SIGNAL(StartGame()), this, SIGNAL(StartGame()));

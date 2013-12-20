@@ -12,7 +12,7 @@ class DConfigMainGeneralTab : public QTabWidget
 	Q_OBJECT
 
 public:
-    DConfigMainGeneralTab(QWidget* parent = NULL);
+	DConfigMainGeneralTab(QWidget* p = NULL);
 
 signals:
 	void IsoPathsChanged();
@@ -29,8 +29,8 @@ public slots:
 	void OnSelectionChanged();
 
 private:
-	QWidget* CreateCoreTabWidget(QWidget* parent);
-	QWidget* CreatePathsTabWidget(QWidget* parent);
+	QWidget* CreateCoreTabWidget(QWidget* p);
+	QWidget* CreatePathsTabWidget(QWidget* p);
 
 	// Core
 	QCheckBox* cbDualCore,* cbIdleSkipping,* cbCheats;

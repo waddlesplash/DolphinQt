@@ -40,12 +40,12 @@ DMainWindow::DMainWindow()
 		// 55% of the window contents are in the upper screen half, 45% in the lower half
 		QDesktopWidget* desktop = ((QApplication*)QApplication::instance())->desktop();
 		QRect screenRect = desktop->screenGeometry(this);
-		int x, y, w, h;
-		w = screenRect.width() * 2 / 3;
-		h = screenRect.height() / 2;
-		x = (screenRect.x() + screenRect.width()) / 2 - w / 2;
-		y = (screenRect.y() + screenRect.height()) / 2 - h * 55 / 100;
-		setGeometry(x, y, w, h);
+		int newX, newY, newW, newH;
+		newW = screenRect.width() * 2 / 3;
+		newH = screenRect.height() / 2;
+		newX = (screenRect.x() + screenRect.width()) / 2 - newW / 2;
+		newY = (screenRect.y() + screenRect.height()) / 2 - newH * 55 / 100;
+		setGeometry(newX, newY, newW, newH);
 	}
 	restoreState(ui_settings.value("main/state").toByteArray());
 	show();
@@ -186,9 +186,8 @@ std::string DMainWindow::RequestBootFilename()
 		return gameBrowser->GetSelectedISO()->GetFileName();
 
 	// Otherwise, try the default ISO and then the previously booted ISO
-	SCoreStartupParameter& StartUp = SConfig::GetInstance().m_LocalCoreStartupParameter;
-
 	// NOTE: Decided to drop default ISO support in Qt GUI since it was kinda pointless, re-enable this code if this decision gets revised
+	// SCoreStartupParameter& StartUp = SConfig::GetInstance().m_LocalCoreStartupParameter;
 //	if (!StartUp.m_strDefaultGCM.empty() && File::Exists(StartUp.m_strDefaultGCM.c_str()))
 //		return StartUp.m_strDefaultGCM;
 

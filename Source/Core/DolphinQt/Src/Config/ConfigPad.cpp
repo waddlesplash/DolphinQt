@@ -1,6 +1,6 @@
 #include "ConfigPad.h"
 
-DConfigPadWidget::DConfigPadWidget(QWidget* parent) : QTabWidget(parent)
+DConfigPadWidget::DConfigPadWidget(QWidget* p) : QTabWidget(p)
 {
 
 }

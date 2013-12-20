@@ -19,7 +19,7 @@ template<class Layout>
 class DGroupBox : public QGroupBox
 {
 public:
-	DGroupBox(const QString& title, QWidget* parent = NULL) : QGroupBox(title, parent)
+	DGroupBox(const QString& t, QWidget* p = NULL) : QGroupBox(t, p)
 	{
 		layout = new Layout;
 		setLayout(layout);
@@ -48,7 +48,7 @@ template<class Layout>
 class DLayoutWidget : public QWidget
 {
 public:
-	DLayoutWidget(QWidget* parent = NULL)
+	DLayoutWidget(QWidget* p = NULL)
 	{
 		layout = new Layout;
 		setLayout(layout);
@@ -83,7 +83,7 @@ class DControlStateManager : public QObject
 	Q_OBJECT
 
 public:
-	DControlStateManager(QObject* parent);
+	DControlStateManager(QObject* p);
 
 	void RegisterControl(QCheckBox* control, bool checked);
 	void RegisterControl(QRadioButton* control, bool checked);

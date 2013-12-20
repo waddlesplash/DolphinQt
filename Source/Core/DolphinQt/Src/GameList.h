@@ -50,11 +50,11 @@ class DGameBrowser : public QWidget
 public:
 	typedef enum { Style_List, Style_Grid } Style;
 
-	DGameBrowser(Style initialStyle, QWidget* parent = NULL);
+	DGameBrowser(Style initialStyle, QWidget* p = NULL);
 	~DGameBrowser();
 
 	Style GetStyle();
-	void SetStyle(Style layout);
+	void SetStyle(Style layoutStyle);
 	void ScanForIsos();
 	GameListItem const* GetSelectedISO() const;
 	QLabel* text;
@@ -112,7 +112,7 @@ private slots:
 protected:
 	void RefreshView();
 	void RebuildGrid();
-	void resizeEvent(QResizeEvent*);
+	void resizeEvent(QResizeEvent*e);
 
 private:
 	const AbstractGameBrowser& abstrGameBrowser;

@@ -148,7 +148,7 @@ QWidget* DConfigGfx::CreateEmulationTabWidget()
 
 
 	// Initial values
-	SCoreStartupParameter& StartUp = SConfig::GetInstance().m_LocalCoreStartupParameter;
+	// SCoreStartupParameter& StartUp = SConfig::GetInstance().m_LocalCoreStartupParameter; // unused
 	int efb_copy_method;
 	if (!g_Config.bEFBCopyEnable) efb_copy_method = 0;
 	else if (!g_Config.bCopyEFBToTexture) efb_copy_method = 3;
@@ -177,7 +177,7 @@ QWidget* DConfigGfx::CreateAdvancedTabWidget()
 	return tab;
 }
 
-DConfigGfx::DConfigGfx(QWidget* parent) : QTabWidget(parent)
+DConfigGfx::DConfigGfx(QWidget* p) : QTabWidget(p)
 {
 	addTab(CreateGeneralTabWidget(), tr("General"));
 	addTab(CreateEnhancementsTabWidget(), tr("Enhancements"));
