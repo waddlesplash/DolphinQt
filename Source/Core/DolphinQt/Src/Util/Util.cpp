@@ -3,6 +3,20 @@
 #include <QRadioButton>
 #include "Util.h"
 
+QString NiceSizeFormat(s64 _size)
+{
+	QStringList list;
+	list << "KB" << "MB" << "GB" << "TB" << "PB" << "EB";
+	QStringListIterator i(list);
+	QString unit("b");
+	double num = _size;
+	while(num >= 1024.0 && i.hasNext()) {
+		unit = i.next();
+		num /= 1024.0;
+	}
+	return QString("%1 %2").arg(QString::number(num,'f', 1)).arg(unit);
+}
+
 DControlStateManager::DControlStateManager(QObject* p) : QObject(p)
 {
 }

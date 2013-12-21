@@ -10,7 +10,7 @@
 
 class DLogWindow;
 class DLogSettings;
-class DGameBrowser;
+class DGameTracker;
 namespace Ui {
 class MainWindow;
 }
@@ -62,7 +62,7 @@ private:
 	void closeEvent(QCloseEvent*);
 
 	Ui::MainWindow *ui;
-	DGameBrowser* gameBrowser;
+	DGameTracker* gameTracker;
 	DRenderWidget* renderWindow;
 	DLogWindow* logWindow;
 	DLogSettings* logSettings;

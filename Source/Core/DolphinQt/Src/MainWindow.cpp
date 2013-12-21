@@ -6,7 +6,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 
-#include "GameList.h"
+#include "GameList/GameTracker.h"
 #include "MainWindow.h"
 #include "LogWidgets.h"
 #include "Util/Resources.h"
@@ -30,9 +30,8 @@ DMainWindow::DMainWindow()
 	UpdateIcons();
 
 	QSettings ui_settings("Dolphin Team", "Dolphin");
-	DGameBrowser::Style gameBrowserStyle = (DGameBrowser::Style)ui_settings.value("gameList/layout", DGameBrowser::Style_List).toInt();
-	gameBrowser = new DGameBrowser(gameBrowserStyle, this);
-	ui->centralWidget->addWidget(gameBrowser);
+	gameTracker = new DGameTracker(this);
+	ui->centralWidget->addWidget(gameTracker);
 
 	if (restoreGeometry(ui_settings.value("main/geometry").toByteArray()) == false)
 	{
@@ -56,7 +55,7 @@ DMainWindow::DMainWindow()
 	dialog = new DConfigDialog(this);
 	connect(dialog, SIGNAL(IsoPathsChanged()), this, SLOT(OnRefreshList()));
 
-	connect(gameBrowser, SIGNAL(StartGame()), this, SLOT(OnStartPause()));
+	connect(gameTracker, SIGNAL(StartGame()), this, SLOT(OnStartPause()));
 	connect(this, SIGNAL(StartIsoScanning()), this, SLOT(OnRefreshList()));
 
 	connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(OnLoadIso()));
@@ -119,7 +118,7 @@ void DMainWindow::closeEvent(QCloseEvent* ev)
 	QSettings ui_settings("Dolphin Team", "Dolphin");
 	ui_settings.setValue("main/geometry", saveGeometry());
 	ui_settings.setValue("main/state", saveState());
-	ui_settings.setValue("gameList/Layout", gameBrowser->GetStyle());
+	ui_settings.setValue("gameList/Layout", gameTracker->getViewStyle());
 
 	QWidget::closeEvent(ev);
 }
@@ -188,8 +187,8 @@ void DMainWindow::StartGame(const std::string& filename)
 std::string DMainWindow::RequestBootFilename()
 {
 	// If a game is already selected, just return the filename
-	if (gameBrowser->GetSelectedISO() != NULL)
-		return gameBrowser->GetSelectedISO()->GetFileName();
+	if (gameTracker->selectedGame() != NULL)
+		return gameTracker->selectedGame()->GetFileName().toStdString();
 
 	// Otherwise, try the default ISO and then the previously booted ISO
 	// NOTE: Decided to drop default ISO support in Qt GUI since it was kinda pointless, re-enable this code if this decision gets revised
@@ -336,7 +335,7 @@ void DMainWindow::OnCoreStateChanged(Core::EState state)
 	ui->actionRefresh->setEnabled(is_not_initialized);
 
 	// Game list
-	gameBrowser->setEnabled(is_not_initialized);
+	gameTracker->setEnabled(is_not_initialized);
 
 	// TODO: Update menu items
 }
@@ -357,7 +356,7 @@ void DMainWindow::OnBrowseIso()
 
 void DMainWindow::OnRefreshList()
 {
-	gameBrowser->ScanForIsos();
+	gameTracker->scanForGames();
 }
 
 void DMainWindow::OpenConfigDialog(DConfigDialog::InitialConfigItem initialConfigItem)

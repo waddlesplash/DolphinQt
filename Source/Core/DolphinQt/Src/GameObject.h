@@ -2,8 +2,8 @@
 // Licensed under GPLv2
 // Refer to the license.txt file included.
 
-#ifndef __ISOFILE_H_
-#define __ISOFILE_H_
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
 
 #include <vector>
 #include <string>
@@ -15,21 +15,22 @@
 #include <QString>
 
 class PointerWrap;
-class GameListItem
+class GameObject
 {
 public:
-    GameListItem(std::string rFileName);
-	~GameListItem();
+	GameObject(std::string rFileName);
+	~GameObject();
 
 	bool IsValid() const {return m_Valid;}
-	const std::string& GetFileName() const {return m_FileName;}
-	std::string GetBannerName(int index) const;
-	std::string GetVolumeName(int index) const;
-	std::string GetName(int index) const;
-	std::string GetCompany() const;
-	std::string GetDescription(int index = 0) const;
+	QString GetFileName() {return QString::fromStdString(m_FileName);}
+	QString GetFolderName();
+	QString GetBannerName(int index) const;
+	QString GetVolumeName(int index) const;
+	QString GetName(int index) const;
+	QString GetCompany() const;
+	QString GetDescription(int index = 0) const;
 	int GetRevision() const { return m_Revision; }
-	const std::string& GetUniqueID() const {return m_UniqueID;}
+	const QString GetUniqueID() const {return QString::fromStdString(m_UniqueID);}
 	const QString GetWiiFSPath() const;
 	DiscIO::IVolume::ECountry GetCountry() const {return m_Country;}
 	int GetPlatform() const {return m_Platform;}
@@ -86,5 +87,4 @@ private:
 	std::string CreateCacheFilename();
 };
 
-
-#endif
+#endif // GAMEOBJECT_H

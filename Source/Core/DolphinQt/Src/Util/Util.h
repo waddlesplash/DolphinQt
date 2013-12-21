@@ -5,6 +5,8 @@
 #include <QGroupBox>
 #include <QMap>
 
+#include "CommonTypes.h"
+
 class QCheckBox;
 class QComboBox;
 class QHBoxLayout;
@@ -14,6 +16,8 @@ class QVBoxLayout;
 
 // Macro for std::string to QString as it's unsightly and most Qt code needs it.
 #define QSTRING_STR(str) QString::fromUtf8(str.data(), str.size())
+
+QString NiceSizeFormat(s64 _size);
 
 template<class Layout>
 class DGroupBox : public QGroupBox

@@ -5,13 +5,14 @@
 #include <string>
 #include <vector>
 #include <QDir>
+#include <QFileInfo>
 #include "Util/Resources.h"
 
 #include "Common.h"
 #include "CommonPaths.h"
 
 #include "FileUtil.h"
-#include "ISOFile.h"
+#include "GameObject.h"
 #include "StringUtil.h"
 #include "Hash.h"
 #include "IniFile.h"
@@ -25,10 +26,7 @@
 
 static const u32 CACHE_REVISION = 0x115;
 
-#define DVD_BANNER_WIDTH 96
-#define DVD_BANNER_HEIGHT 32
-
-GameListItem::GameListItem(std::string rFileName)
+GameObject::GameObject(std::string rFileName)
     : m_FileName(rFileName)
 	, m_emu_state(0)
 	, m_FileSize(0)
@@ -94,7 +92,6 @@ GameListItem::GameListItem(std::string rFileName)
 												(Buffer[i] & 0x00FF00) >>  8,
 												(Buffer[i] & 0x0000FF) >>  0));
 						}
-						m_Banner = m_Banner.scaled(DVD_BANNER_WIDTH, DVD_BANNER_HEIGHT);
 						hasBanner = !m_Banner.isNull();
 					}
 					delete pBannerLoader;
@@ -130,26 +127,26 @@ GameListItem::GameListItem(std::string rFileName)
 	}
 }
 
-GameListItem::~GameListItem()
+GameObject::~GameObject()
 {
 }
 
-bool GameListItem::LoadFromCache()
+bool GameObject::LoadFromCache()
 {
-	return CChunkFileReader::Load<GameListItem>(CreateCacheFilename(), CACHE_REVISION, *this);
+	return CChunkFileReader::Load<GameObject>(CreateCacheFilename(), CACHE_REVISION, *this);
 }
 
-void GameListItem::SaveToCache()
+void GameObject::SaveToCache()
 {
 	if (!File::IsDirectory(File::GetUserPath(D_CACHE_IDX)))
 	{
 		File::CreateDir(File::GetUserPath(D_CACHE_IDX));
 	}
 
-	CChunkFileReader::Save<GameListItem>(CreateCacheFilename(), CACHE_REVISION, *this);
+	CChunkFileReader::Save<GameObject>(CreateCacheFilename(), CACHE_REVISION, *this);
 }
 
-void GameListItem::DoState(PointerWrap &p)
+void GameObject::DoState(PointerWrap &p)
 {
 	p.Do(m_volume_names);
 	p.Do(m_company);
@@ -167,7 +164,7 @@ void GameListItem::DoState(PointerWrap &p)
 	p.Do(m_Revision);
 }
 
-std::string GameListItem::CreateCacheFilename()
+std::string GameObject::CreateCacheFilename()
 {
 	std::string Filename, LegalPathname, extension;
 	SplitPath(m_FileName, &LegalPathname, &Filename, &extension);
@@ -185,78 +182,84 @@ std::string GameListItem::CreateCacheFilename()
 	return fullname;
 }
 
-std::string GameListItem::GetCompany() const
+QString GameObject::GetFolderName()
+{
+	QFileInfo f(QString::fromStdString(m_FileName));
+	return f.absoluteDir().dirName();
+}
+
+QString GameObject::GetCompany() const
 {
 	if (m_company.empty())
 		return "N/A";
 	else
-		return m_company;
+		return QString::fromStdString(m_company);
 }
 
 // (-1 = Japanese, 0 = English, etc)?
-std::string GameListItem::GetDescription(int _index) const
+QString GameObject::GetDescription(int _index) const
 {
 	const u32 index = _index;
 
 	if (index < m_descriptions.size())
-		return m_descriptions[index];
+		return QString::fromStdString(m_descriptions[index]);
 	
 	if (!m_descriptions.empty())
-		return m_descriptions[0];
+		return QString::fromStdString(m_descriptions[0]);
 
 	return "";
 }
 
 // (-1 = Japanese, 0 = English, etc)?
-std::string GameListItem::GetVolumeName(int _index) const
+QString GameObject::GetVolumeName(int _index) const
 {
 	u32 const index = _index;
 
 	if (index < m_volume_names.size() && !m_volume_names[index].empty())
-		return m_volume_names[index];
+		return QString::fromStdString(m_volume_names[index]);
 
 	if (!m_volume_names.empty())
-		return m_volume_names[0];
+		return QString::fromStdString(m_volume_names[0]);
 	
 	return "";
 }
 
 // (-1 = Japanese, 0 = English, etc)?
-std::string GameListItem::GetBannerName(int _index) const
+QString GameObject::GetBannerName(int _index) const
 {
 	u32 const index = _index;
 
 	if (index < m_names.size() && !m_names[index].empty())
-		return m_names[index];
+		return QString::fromStdString(m_names[index]);
 	
 	if (!m_names.empty())
-		return m_names[0];
+		return QString::fromStdString(m_names[0]);
 
 	return "";
 }
 
 // (-1 = Japanese, 0 = English, etc)?
-std::string GameListItem::GetName(int _index) const
+QString GameObject::GetName(int _index) const
 {
 	// Prefer name from banner, fallback to name from volume, fallback to filename
-	
-	std::string name = GetBannerName(_index);
+
+	std::string name = GetBannerName(_index).toStdString();
 	
 	if (name.empty())
-		name = GetVolumeName(_index);
+		name = GetVolumeName(_index).toStdString();
 
 	if (name.empty())
 	{
 		// No usable name, return filename (better than nothing)
-		SplitPath(GetFileName(), NULL, &name, NULL);
+		SplitPath(m_FileName, NULL, &name, NULL);
 	}
 
-	return name;
+	return QString::fromStdString(name);
 }
 
-const QString GameListItem::GetWiiFSPath() const
+const QString GameObject::GetWiiFSPath() const
 {
-    DiscIO::IVolume *Iso = DiscIO::CreateVolumeFromFilename(m_FileName);
+	DiscIO::IVolume *Iso = DiscIO::CreateVolumeFromFilename(m_FileName);
 	QString ret;
 
 	if (Iso == NULL)

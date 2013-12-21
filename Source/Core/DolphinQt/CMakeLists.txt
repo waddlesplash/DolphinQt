@@ -12,10 +12,11 @@ set(SRCS Src/Config/ConfigAudio.cpp
         Src/Config/ConfigMain.cpp
         Src/Config/ConfigPad.cpp
         Src/Config/ConfigWiimote.cpp
+        Src/GameList/GameTracker.cpp
+        Src/GameList/GameTree.cpp
+        Src/GameObject.cpp
         Src/Util/Util.cpp
         Src/Util/Resources.cpp
-        Src/GameList.cpp
-        Src/ISOFile.cpp
         Src/LogWidgets.cpp
         Src/main.cpp
         Src/MainWindow.cpp
@@ -49,9 +50,9 @@ else()
 	else()
 		set(SRCS ${SRCS} ../DolphinWX/Src/GLInterface/GLX.cpp
 			../DolphinWX/Src/GLInterface/X11_Util.cpp)
-                set(LIBS ${LIBS} rt ${X11_LIBRARIES}
-                        ${XINPUT2_LIBRARIES}
-                        ${XRANDR_LIBRARIES})
+		set(LIBS ${LIBS} rt ${X11_LIBRARIES}
+				${XINPUT2_LIBRARIES}
+				${XRANDR_LIBRARIES})
 	endif()
 endif()
 
@@ -76,14 +77,16 @@ qt_moc(MOC_SRCS Src/Config/ConfigAudio.h
                 Src/Config/ConfigMain.h
                 Src/Config/ConfigPad.h
                 Src/Config/ConfigWiimote.h
+                Src/GameList/GameTracker.h
+                Src/GameList/GameTree.h
                 Src/Util/Util.h
-                Src/GameList.h
                 Src/LogWidgets.h
                 Src/MainWindow.h
                 Src/RenderWidget.h)
 qt_ui(UIC_SRCS Src/MainWindow.ui
                Src/LogWindow.ui
-               Src/LogSettings.ui)
+               Src/LogSettings.ui
+               Src/GameList/GameTree.ui)
 qt_res(QRC_SRCS Resources/Resources.qrc)
 
 add_executable(${EXEGUI} ${SRCS} ${MOC_SRCS} ${UIC_SRCS} ${QRC_SRCS})
