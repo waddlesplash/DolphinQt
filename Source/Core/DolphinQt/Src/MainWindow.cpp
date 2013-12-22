@@ -333,11 +333,10 @@ void DMainWindow::OnCoreStateChanged(Core::EState state)
 
 	ui->actionOpen->setEnabled(is_not_initialized);
 	ui->actionRefresh->setEnabled(is_not_initialized);
+	ui->actionAddFolder->setEnabled(is_not_initialized);
 
 	// Game list
 	gameTracker->setEnabled(is_not_initialized);
-
-	// TODO: Update menu items
 }
 
 void DMainWindow::OnLoadIso()
