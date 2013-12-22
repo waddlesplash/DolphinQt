@@ -342,7 +342,9 @@ void DMainWindow::OnCoreStateChanged(Core::EState state)
 
 void DMainWindow::OnLoadIso()
 {
-	QString selection = QFileDialog::getOpenFileName(this, tr("Open File"), QString(), tr("GC/Wii Files [elf, dol, gcm, iso, ciso, gcz, wad] (*.elf *.dol *.gcm *.iso *.ciso *.gcz *.wad);;All Files (*)"));
+	QString selection =
+			QFileDialog::getOpenFileName(this, tr("Open File"), QString(),
+										 tr("Wii/GC files (*.elf *.dol *.gcm *.iso *.ciso *.gcz *.wad *.wbfs);;All Files (*)"));
 	if(selection.length()) StartGame(selection.toStdString());
 }
 
