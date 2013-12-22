@@ -84,6 +84,8 @@ DMainWindow::~DMainWindow()
 	delete ui;
 }
 
+/* UpdateIcons: change all the icons used in DMainWindow with fresh ones from
+ * "Resources". Call this function after changing the icon theme. */
 void DMainWindow::UpdateIcons()
 {
 	setWindowIcon(Resources::GetIcon(Resources::DOLPHIN_LOGO));
