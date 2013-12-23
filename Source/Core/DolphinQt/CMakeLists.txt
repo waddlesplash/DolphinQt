@@ -1,9 +1,4 @@
-if(QT4)
-    include_directories(${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}/../QtWidgets ${QT_QTGUI_INCLUDE_DIR}/${QTVERSION}/QtGui)
-elseif(QT5)
-    include_directories(${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}})
-endif()
-
+include_directories(${QT_INCLUDE})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}) # because of generated UI files
 
 set(SRCS Src/Config/ConfigAudio.cpp
@@ -90,5 +85,5 @@ qt_ui(UIC_SRCS Src/MainWindow.ui
 qt_res(QRC_SRCS Resources/Resources.qrc)
 
 add_executable(${EXEGUI} ${SRCS} ${MOC_SRCS} ${UIC_SRCS} ${QRC_SRCS})
-target_link_libraries(${EXEGUI} ${LIBS} ${QT_LIBRARIES})
+target_link_libraries(${EXEGUI} ${LIBS} ${QT_LIBS})
 install(TARGETS ${EXEGUI} RUNTIME DESTINATION ${bindir})
