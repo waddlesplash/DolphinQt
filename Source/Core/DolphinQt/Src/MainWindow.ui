@@ -19,8 +19,7 @@
   <property name="windowTitle">
    <string>Dolphin</string>
   </property>
-  <widget class="QStackedWidget" name="centralWidget">
-  </widget>
+  <widget class="QStackedWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -81,7 +80,7 @@
     <addaction name="actionDocumentation"/>
     <addaction name="actionDevelopment"/>
     <addaction name="separator"/>
-    <addaction name="actionReportIssue"/>
+    <addaction name="actionSystemInfo"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -221,9 +220,9 @@
     <string>Pause</string>
    </property>
   </action>
-  <action name="actionReportIssue">
+  <action name="actionSystemInfo">
    <property name="text">
-    <string>Report issue...</string>
+    <string>System Information</string>
    </property>
   </action>
  </widget>

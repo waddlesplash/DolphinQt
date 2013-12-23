@@ -6,6 +6,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 
+#include "SystemInfo.h"
 #include "GameList/GameTracker.h"
 #include "MainWindow.h"
 #include "LogWidgets.h"
@@ -393,9 +394,10 @@ void DMainWindow::OnWiimoteSettings()
 	OpenConfigDialog(DConfigDialog::ICI_Wiimote);
 }
 
-void DMainWindow::on_actionReportIssue_triggered()
+void DMainWindow::on_actionSystemInfo_triggered()
 {
-
+	DSystemInfo s(this);
+	s.exec();
 }
 
 void DMainWindow::on_actionWebsite_triggered()
