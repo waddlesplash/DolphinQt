@@ -87,6 +87,10 @@ void DGameTracker::scanForGames()
 		Extensions.push_back("*.ciso");
 		Extensions.push_back("*.gcz");
 		Extensions.push_back("*.wbfs");
+		Extensions.push_back("*.elf");
+		Extensions.push_back("*.dol");
+		Extensions.push_back("*.dff");
+		Extensions.push_back("*.tmd");
 	}
 	if (SConfig::GetInstance().m_ListWad)
 		Extensions.push_back("*.wad");
