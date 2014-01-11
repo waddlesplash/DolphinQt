@@ -208,7 +208,10 @@ std::string DMainWindow::RequestBootFilename()
 	if (!SConfig::GetInstance().m_LastFilename.empty() && File::Exists(SConfig::GetInstance().m_LastFilename.c_str()))
 		return SConfig::GetInstance().m_LastFilename;
 
-	QString selection = QFileDialog::getOpenFileName(this, tr("Open File"), QString(), tr("GC/Wii Files [elf, dol, gcm, iso, ciso, gcz, wad] (*.elf *.dol *.gcm *.iso *.ciso *.gcz *.wad);;All Files (*)"));
+	QString selection =
+			QFileDialog::getOpenFileName(this, tr("Open File"), QString(),
+										 tr("All supported ROMs (%1);;All files (*)")
+										 .arg("*.gcm *.iso *.ciso *.gcz *.wbfs *.elf *.dol *.dff *.tmd *.wad"));
 	if(selection.length()) return selection.toStdString();
 
 	return std::string();
@@ -352,7 +355,8 @@ void DMainWindow::OnLoadIso()
 {
 	QString selection =
 			QFileDialog::getOpenFileName(this, tr("Open File"), QString(),
-										 tr("Wii/GC files (*.elf *.dol *.gcm *.iso *.ciso *.gcz *.wad *.wbfs);;All Files (*)"));
+										 tr("All supported ROMs (%1);;All files (*)")
+										 .arg("*.gcm *.iso *.ciso *.gcz *.wbfs *.elf *.dol *.dff *.tmd *.wad"));
 	if(selection.length()) StartGame(selection.toStdString());
 }
 
