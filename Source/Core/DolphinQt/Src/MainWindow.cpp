@@ -458,5 +458,5 @@ void DMainWindow::on_actionAbout_triggered()
 						"We are not affiliated with Nintendo in any way.\n"
 						"Gamecube and Wii are trademarks of Nintendo.\n"
 						"The emulator should not be used to play games\n"
-						"you do not legally own.").arg(scm_desc_str).arg("2013").arg(scm_branch_str).arg(scm_rev_git_str).arg(__DATE__).arg(__TIME__));
+						"you do not legally own.").arg(scm_desc_str).arg("2014").arg(scm_branch_str).arg(scm_rev_git_str).arg(__DATE__).arg(__TIME__));
 }
