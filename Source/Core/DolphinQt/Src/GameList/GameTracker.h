@@ -54,7 +54,8 @@ private slots:
 
 private:
 	enum WidgetType {
-		TYPE_TREEWIDGET
+		TYPE_TREEWIDGET,
+		TYPE_LISTWIDGET
 	};
 
 	QList<GameObject*> gameObjects;

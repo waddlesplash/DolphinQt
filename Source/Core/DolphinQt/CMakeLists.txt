@@ -9,6 +9,7 @@ set(SRCS Src/Config/ConfigAudio.cpp
         Src/Config/ConfigWiimote.cpp
         Src/GameList/GameTracker.cpp
         Src/GameList/GameTree.cpp
+        Src/GameList/GameGrid.cpp
         Src/GameObject.cpp
         Src/Util/Util.cpp
         Src/Util/Resources.cpp
@@ -75,6 +76,7 @@ qt_moc(MOC_SRCS Src/Config/ConfigAudio.h
                 Src/Config/ConfigWiimote.h
                 Src/GameList/GameTracker.h
                 Src/GameList/GameTree.h
+                Src/GameList/GameGrid.h
                 Src/Util/Util.h
                 Src/LogWidgets.h
                 Src/MainWindow.h
@@ -84,6 +86,7 @@ qt_ui(UIC_SRCS Src/MainWindow.ui
                Src/LogWindow.ui
                Src/LogSettings.ui
                Src/GameList/GameTree.ui
+                Src/GameList/GameGrid.ui
                Src/SystemInfo.ui)
 qt_res(QRC_SRCS Resources/Resources.qrc)
 

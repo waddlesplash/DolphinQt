@@ -10,6 +10,7 @@
 #include <QLabel>
 
 #include "GameTree.h"
+#include "GameGrid.h"
 
 DGameTracker::DGameTracker(QWidget* p)
 	: QStackedWidget(p)
@@ -19,6 +20,11 @@ DGameTracker::DGameTracker(QWidget* p)
 	myViewers.insert(TYPE_TREEWIDGET, (AbstractGameViewer*)w);
 	connect(w, SIGNAL(GameStarter()), this, SLOT(GameStarter()));
 
+	GameGrid* g = new GameGrid(this);
+	addWidget(g);
+	myViewers.insert(TYPE_LISTWIDGET, (AbstractGameViewer*)g);
+	connect(g, SIGNAL(GameStarter()), this, SLOT(GameStarter()));
+
 	setViewStyle(STYLE_LIST);
 	setDisabled(false);
 
@@ -26,6 +32,7 @@ DGameTracker::DGameTracker(QWidget* p)
 	connect(styleSwitcher, SIGNAL(currentIndexChanged(QString)), this, SLOT(SwitchStyle(QString)));
 	styleSwitcher->addItem(tr("Tree"));
 	styleSwitcher->addItem(tr("List"));
+	styleSwitcher->addItem(tr("Grid"));
 }
 
 void DGameTracker::addWidgetsToStatusBar(QStatusBar* s)
@@ -42,6 +49,9 @@ void DGameTracker::setViewStyle(TrackerStyle newStyle)
 		setCurrentWidget(myViewers.value(TYPE_TREEWIDGET)->myWidget());
 		myViewers.value(TYPE_TREEWIDGET)->setViewStyle(newStyle);
 	} else {
+		currentType = TYPE_LISTWIDGET;
+		setCurrentWidget(myViewers.value(TYPE_LISTWIDGET)->myWidget());
+		myViewers.value(TYPE_LISTWIDGET)->setViewStyle(newStyle);
 	}
 }
 
@@ -51,6 +61,8 @@ void DGameTracker::SwitchStyle(QString styleName)
 		setViewStyle(STYLE_TREE);
 	} else if(styleName == tr("List")) {
 		setViewStyle(STYLE_LIST);
+	} else if(styleName == tr("Grid")) {
+		setViewStyle(STYLE_GRID);
 	}
 }
 

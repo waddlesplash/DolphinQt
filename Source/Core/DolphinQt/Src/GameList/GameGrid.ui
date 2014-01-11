@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GameGrid</class>
+ <widget class="QListWidget" name="GameGrid">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>256</width>
+    <height>192</height>
+   </rect>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>144</width>
+    <height>48</height>
+   </size>
+  </property>
+  <property name="viewMode">
+   <enum>QListView::IconMode</enum>
+  </property>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
