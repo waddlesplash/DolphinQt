@@ -33,6 +33,7 @@ DGameTracker::DGameTracker(QWidget* p)
 	styleSwitcher->addItem(tr("Tree"));
 	styleSwitcher->addItem(tr("List"));
 	styleSwitcher->addItem(tr("Grid"));
+	styleSwitcher->addItem(tr("Icons"));
 }
 
 void DGameTracker::addWidgetsToStatusBar(QStatusBar* s)
@@ -63,6 +64,8 @@ void DGameTracker::SwitchStyle(QString styleName)
 		setViewStyle(STYLE_LIST);
 	} else if(styleName == tr("Grid")) {
 		setViewStyle(STYLE_GRID);
+	} else if(styleName == tr("Icons")) {
+		setViewStyle(STYLE_ICONS);
 	}
 }
 

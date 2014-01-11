@@ -7,7 +7,6 @@ GameGrid::GameGrid(QWidget *p) :
 {
 	ui->setupUi(this);
 	setViewStyle(STYLE_GRID);
-	setDragEnabled(false);
 
 	connect(this, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(itemActivated()));
 }
@@ -27,9 +26,14 @@ void GameGrid::setViewStyle(TrackerStyle newStyle)
 	if(newStyle == currentStyle) { return; }
 	if(newStyle == STYLE_GRID) {
 		currentStyle = STYLE_GRID;
+		setIconSize(QSize(144, 48));
+		setViewMode(QListView::IconMode);
 	} else {
 		currentStyle = STYLE_ICONS;
+		setIconSize(QSize(32, 32));
+		setViewMode(QListView::ListMode);
 	}
+	setDragEnabled(false);
 }
 
 void GameGrid::addNewGame(GameObject* itm)
