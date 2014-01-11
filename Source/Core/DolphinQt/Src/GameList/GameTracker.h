@@ -7,6 +7,9 @@
 
 #include "../GameObject.h"
 
+class QStatusBar;
+class QComboBox;
+
 enum TrackerStyle {
 	STYLE_LIST,
 	STYLE_TREE,
@@ -33,6 +36,7 @@ class DGameTracker : public QStackedWidget
 	Q_OBJECT
 public:
 	DGameTracker(QWidget *p = 0);
+	void addWidgetsToStatusBar(QStatusBar* s);
 
 	inline TrackerStyle getViewStyle() { return currentStyle; }
 	void setViewStyle(TrackerStyle newStyle);
@@ -45,15 +49,18 @@ signals:
 	void StartGame();
 
 private slots:
+	void SwitchStyle(QString styleName);
 	void GameStarter();
 
 private:
 	enum WidgetType {
-		TYPE_TREE
+		TYPE_TREEWIDGET
 	};
 
 	QList<GameObject*> gameObjects;
 	QMap<QString, GameObject*> gameObjectForFilename;
+
+	QComboBox* styleSwitcher;
 
 	TrackerStyle currentStyle;
 	WidgetType currentType;

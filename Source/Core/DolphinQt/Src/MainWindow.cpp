@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QSpacerItem>
 
 #include "SystemInfo.h"
 #include "GameList/GameTracker.h"
@@ -33,6 +34,11 @@ DMainWindow::DMainWindow()
 	QSettings ui_settings("Dolphin Team", "Dolphin");
 	gameTracker = new DGameTracker(this);
 	ui->centralWidget->addWidget(gameTracker);
+
+	QWidget* spacer = new QWidget();
+	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	ui->statusBar->addWidget(spacer, 2);
+	gameTracker->addWidgetsToStatusBar(ui->statusBar);
 
 	if (restoreGeometry(ui_settings.value("main/geometry").toByteArray()) == false)
 	{

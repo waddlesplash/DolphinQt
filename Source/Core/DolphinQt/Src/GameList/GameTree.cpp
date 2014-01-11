@@ -12,7 +12,7 @@ GameTree::GameTree(QWidget *p) :
 	ui(new Ui::GameTree)
 {
 	ui->setupUi(this);
-	setViewStyle(STYLE_LIST);
+	setViewStyle(STYLE_TREE);
 	setIconSize(QSize(DVD_BANNER_WIDTH, DVD_BANNER_HEIGHT));
 	sortByColumn(COL_TITLE);
 
@@ -89,12 +89,14 @@ void GameTree::removeGame(GameObject* item)
 void GameTree::rebuildTree()
 {
 	// TODO: benchmark this function!
-	for(int a = 0; a < topLevelItemCount(); a++) {
-		takeTopLevelItem(a);
+	int count = topLevelItemCount();
+	for(int a = 0; a < count; a++) {
+		takeTopLevelItem(0);
 	}
 	foreach(QTreeWidgetItem* i, rootNodesForPath.values()) {
-		for(int a = 0; a < i->childCount(); a++) {
-			i->takeChild(a);
+		count = i->childCount();
+		for(int a = 0; a < count; a++) {
+			i->takeChild(0);
 		}
 	}
 

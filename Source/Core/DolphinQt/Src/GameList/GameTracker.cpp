@@ -5,31 +5,52 @@
 #include "CDUtils.h"
 
 #include <QProgressDialog>
+#include <QComboBox>
+#include <QStatusBar>
+#include <QLabel>
 
 #include "GameTree.h"
 
 DGameTracker::DGameTracker(QWidget* p)
 	: QStackedWidget(p)
 {
-	currentStyle = STYLE_LIST;
-
 	GameTree* w = new GameTree(this);
 	addWidget(w);
-	myViewers.insert(TYPE_TREE, (AbstractGameViewer*)w);
+	myViewers.insert(TYPE_TREEWIDGET, (AbstractGameViewer*)w);
 	connect(w, SIGNAL(GameStarter()), this, SLOT(GameStarter()));
 
-	currentType = TYPE_TREE;
+	setViewStyle(STYLE_LIST);
 	setDisabled(false);
+
+	styleSwitcher = new QComboBox(p);
+	connect(styleSwitcher, SIGNAL(currentIndexChanged(QString)), this, SLOT(SwitchStyle(QString)));
+	styleSwitcher->addItem(tr("Tree"));
+	styleSwitcher->addItem(tr("List"));
+}
+
+void DGameTracker::addWidgetsToStatusBar(QStatusBar* s)
+{
+	s->addWidget(new QLabel(tr("Style: "), s));
+	s->addWidget(styleSwitcher);
 }
 
 void DGameTracker::setViewStyle(TrackerStyle newStyle)
 {
 	currentStyle = newStyle;
 	if(newStyle == STYLE_LIST || newStyle == STYLE_TREE) {
-		currentType = TYPE_TREE;
-		setCurrentWidget(myViewers.value(TYPE_TREE)->myWidget());
-		myViewers.value(TYPE_TREE)->setViewStyle(newStyle);
+		currentType = TYPE_TREEWIDGET;
+		setCurrentWidget(myViewers.value(TYPE_TREEWIDGET)->myWidget());
+		myViewers.value(TYPE_TREEWIDGET)->setViewStyle(newStyle);
 	} else {
+	}
+}
+
+void DGameTracker::SwitchStyle(QString styleName)
+{
+	if(styleName == tr("Tree")) {
+		setViewStyle(STYLE_TREE);
+	} else if(styleName == tr("List")) {
+		setViewStyle(STYLE_LIST);
 	}
 }
 
