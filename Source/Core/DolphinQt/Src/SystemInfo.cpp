@@ -2,6 +2,7 @@
 #include "SystemInfo.h"
 
 #include <QtGlobal>
+#include <QThread>
 #include "Common.h"
 
 DSystemInfo::DSystemInfo(QWidget *p) :
@@ -27,11 +28,13 @@ void DSystemInfo::UpdateSystemInfo()
 	QString sysinfo = "";
 
 	sysinfo += "System\n===========================\n";
-	int s = sizeof(void*)*8;
-	sysinfo += QString("OS: %1 %2-bit").arg(GetOS()).arg(s) + "\n";
+	sysinfo += QString("OS: %1").arg(GetOS()) + "\n";
+	sysinfo += QString("Cores: %1").arg(QThread::idealThreadCount()) + "\n";
 
 	sysinfo += "\nDolphin\n===========================\n";
+	int bits = sizeof(void*)*8;
 	sysinfo += QString("SCM: branch %1, rev %2\n").arg(scm_branch_str).arg(scm_rev_git_str);
+	sysinfo += QString("Type: %1-bit").arg(bits) + "\n";
 	sysinfo += QString("Compiled: %1, %2\n").arg(__DATE__).arg(__TIME__);
 
 	sysinfo += "\nGUI\n===========================\n";
@@ -80,8 +83,8 @@ QString DSystemInfo::GetOS()
 	ret += "Unknown";
 #endif
 
-#ifdef Q_WS_X11 || Q_OS_X11
-	ret += "/X11";
+#if defined(Q_WS_X11) || defined(Q_OS_X11)
+	ret += " X11";
 #endif
 
 	return ret;
