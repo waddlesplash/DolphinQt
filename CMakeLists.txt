@@ -123,7 +123,7 @@ message(${CMAKE_SYSTEM_PROCESSOR})
 if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
 	set(_M_GENERIC 1)
 	set(_M_ARM 1)
-	if(${ANDROID_NDK_ABI_NAME} STREQUAL "armeabi-v7a")
+	if(${ANDROID_NDK_ABI_NAME} MATCHES "armeabi-v7a")
 		add_definitions(-marm -march=armv7-a)
 	endif()
 	# Set generic options so you don't have to pass anything to cmake to build ARM
@@ -294,6 +294,8 @@ if(ANDROID)
 	set(USE_GLES3 1)
 endif()
 
+include_directories(Externals/GL)
+
 # For now GLES and EGL are tied to each other.
 # Enabling GLES also disables the OpenGL plugin.
 if(USE_GLES3)
@@ -351,10 +353,10 @@ endif()
 
 if(NOT ANDROID)
 
-	include(FindOpenGL)
-	include_directories(${OPENGL_INCLUDE_DIR})
-	if(NOT OPENGL_GLU_FOUND)
-		message(FATAL_ERROR "GLU is required but not found")
+	if(NOT USE_GLES3)
+		include(FindOpenGL)
+	else()
+		set(X11_FOUND 1)
 	endif()
 	
 	include(FindALSA OPTIONAL)
@@ -492,16 +494,16 @@ endif()
 ########################################
 # Setup include directories (and make sure they are preferred over the Externals)
 #
-include_directories(Source/Core/AudioCommon/Src)
-include_directories(Source/Core/Common/Src)
-include_directories(Source/Core/Core/Src)
-include_directories(Source/Core/DebuggerUICommon/Src)
-include_directories(Source/Core/DebuggerWX/Src)
-include_directories(Source/Core/DiscIO/Src)
-include_directories(Source/Core/DolphinWX/Src)
-include_directories(Source/Core/InputCommon/Src)
-include_directories(Source/Core/VideoCommon/Src)
-include_directories(Source/Core/VideoUICommon/Src)
+include_directories(Source/Core/AudioCommon)
+include_directories(Source/Core/Common)
+include_directories(Source/Core/Core)
+include_directories(Source/Core/DebuggerUICommon)
+include_directories(Source/Core/DebuggerWX)
+include_directories(Source/Core/DiscIO)
+include_directories(Source/Core/DolphinWX)
+include_directories(Source/Core/InputCommon)
+include_directories(Source/Core/VideoCommon)
+include_directories(Source/Core/VideoUICommon)
 
 ########################################
 # Process externals and setup their include directories
@@ -515,6 +517,21 @@ include_directories(Source/Core/VideoUICommon/Src)
 #
 add_subdirectory(Externals/Bochs_disasm)
 include_directories(Externals/Bochs_disasm)
+
+# If zlib has already been found on a previous run of cmake don't check again
+# as the check seems to take a long time.
+if(NOT ZLIB_FOUND)
+	include(FindZLIB OPTIONAL)
+endif()
+if(ZLIB_FOUND)
+	set(ZLIB_FOUND 1 CACHE INTERNAL "")
+	message("Using shared zlib")
+	include_directories(${ZLIB_INCLUDE_DIRS})
+else(ZLIB_FOUND)
+	message("Shared zlib not found, falling back to the static library")
+	add_subdirectory(Externals/zlib)
+	include_directories(Externals/zlib)
+endif(ZLIB_FOUND)
 
 if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT ANDROID)
 	check_lib(LZO lzo2 lzo/lzo1x.h QUIET)
@@ -637,37 +654,6 @@ else()
 	include_directories(Externals/SOIL)
 endif()
 
-# If zlib has already been found on a previous run of cmake don't check again
-# as the check seems to take a long time.
-if(NOT ZLIB_FOUND)
-	include(FindZLIB OPTIONAL)
-endif()
-if(ZLIB_FOUND)
-	set(ZLIB_FOUND 1 CACHE INTERNAL "")
-	message("Using shared zlib")
-	include_directories(${ZLIB_INCLUDE_DIRS})
-else(ZLIB_FOUND)
-	message("Shared zlib not found, falling back to the static library")
-	add_subdirectory(Externals/zlib)
-	include_directories(Externals/zlib)
-endif(ZLIB_FOUND)
-
-if(WIN32)
-	find_library(GLEW glew32s PATHS Externals/GLew)
-	include_directories(Externals/GLew/include)
-else()
-	if(NOT USE_GLES3)
-		if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-			include(FindGLEW)
-		endif()
-		if(NOT GLEW_FOUND OR NOT GLEW_HAS_1_9_METHODS)
-			message("Using static GLEW from Externals")
-			add_subdirectory(Externals/GLew)
-			include_directories(Externals/GLew/include)
-		endif()
-	endif()
-endif()
-
 if (ANDROID)
 	message("Using static iconv from Externals")
 	include_directories(Externals/libiconv-1.14/include)
@@ -772,13 +758,13 @@ else()
 	set(DOLPHIN_WC_IS_MASTER "0")
 endif()
 
-file(WRITE ${PROJECT_BINARY_DIR}/Source/Core/Common/Src/scmrev.h
+file(WRITE ${PROJECT_BINARY_DIR}/Source/Core/Common/scmrev.h
 	"#define SCM_REV_STR \"" ${DOLPHIN_WC_REVISION} "\"\n"
 	"#define SCM_DESC_STR \"" ${DOLPHIN_WC_DESCRIBE} "\"\n"
 	"#define SCM_BRANCH_STR \"" ${DOLPHIN_WC_BRANCH} "\"\n"
 	"#define SCM_IS_MASTER " ${DOLPHIN_WC_IS_MASTER} "\n"
 	)
-include_directories("${PROJECT_BINARY_DIR}/Source/Core/Common/Src")
+include_directories("${PROJECT_BINARY_DIR}/Source/Core/Common")
 
 
 ########################################
